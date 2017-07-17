@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/ic_home"
+        android:title="Clinics"
+        android:checked="true"/>
+
+    <item
+        android:id="@+id/map"
+        android:icon="@drawable/ic_search"
+        android:title="Find Clinics"
+        android:checkable="false" />
+    <item
+        android:id="@+id/events"
+        android:icon="@drawable/ic_trans"
+        android:title="Transactions"
+        android:checkable="false" />
+    <item
+        android:id="@+id/logout"
+        android:icon="@drawable/ic_sign_out"
+        android:title="Logout"
+        android:checkable="false"  />
+
+
+</menu>

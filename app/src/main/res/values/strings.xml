@@ -1,0 +1,102 @@
+<resources>
+    <string name="app_name">Clinic Reservation</string>
+
+    <string name="place_details">&lt;b&gt;%1$s&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Place Id: %2$s&lt;/i&gt;&lt;br/&gt;Address: %3$s&lt;br/&gt;Phone: %4$s&lt;br/&gt;Website: %5$s</string>
+    <!-- Facebook APP ID -->
+    <string name="facebook_app_id">1860657544178303</string>
+    <string name="fb_login_protocol_scheme">fb1860657544178303</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="oops">Oops, something went wrong</string>
+
+
+    <!-- Verify -->
+    <string name="verification_code">CODE</string>
+    <string name="verify_text">An email was sent to your registered email address, please input the verification code below</string>
+    <string name="verify_spams">If you don\'t see the verification email in your inbox, please check your Junk or Spam folders.</string>
+    <string name="or">or</string>
+    <string name="resend_email">RESEND EMAIL</string>
+    <string name="having_trouble">Having Trouble?</string>
+    <string name="step_1_verify_your_email">Verify your Email</string>
+
+    <!-- Forgot Password -->
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="password_recovery">Password Recovery</string>
+    <string name="send_new_password">SEND NEW PASSWORD</string>
+    <string name="change_password_dialog">Enter your email address below and we\'ll send you instructions on how to change your password</string>
+    <string name="resetpass">Password was reset, check your email</string>
+
+    <!-- regisration strings -->
+    <string name="action_settings">Settings</string>
+    <string name="account_details">Account Details</string>
+    <string name="personal_info">Personal Info</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="last_name">Last Name</string>
+    <string name="first_name">First Name</string>
+    <string name="full_name">Name</string>
+    <string name="birthday">Birthday</string>
+    <string name="contact">Contact</string>
+    <string name="submit">SUBMIT</string>
+    <string name="terms_of_use">TERMS OF USE</string>
+    <string name="i_agree_to_the">I agree to the</string>
+    <string name="fill_up">Please fill up all fields</string>
+    <string name="passwords_must_be_atleast_6_characters">Passwords must be atleast 6 characters</string>
+    <string name="billing_info">Billing Info</string>
+    <string name="city">City</string>
+    <string name="address">Address</string>
+    <string name="zip_code">Zip Code</string>
+    <string name="country">Country</string>
+
+    <string name="confirm">Confirm</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_new_password">Confirm New Password</string>
+    <string name="please_wait">Please wait</string>
+    <string name="password_updated">Password Updated</string>
+    <string name="philippines">Philippines</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="edit">EDIT</string>
+
+
+    <string name="allowed_strings">QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890</string>
+    <string name="allowed_strings_email">QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890@_.</string>
+    <string name="registration">Account Registration</string>
+    <string name="code_mismatch">Code Mismatch</string>
+
+
+    <string name="settings">Settings</string>
+    <string name="help">Help</string>
+    <string name="string_help_text"> The permission is missing.\n\nTo grant this permission click on Settings, then Permissions and turn the permission on.\n\nThen click back twice to return to the app</string>
+    <string name="quit">Exit App</string>
+    <string name="string_choose_image">Select Image to Upload</string>
+    <string name="done">DONE</string>
+    <string name="update">UPDATE</string>
+    <string name="title_activity_maps">Map</string>
+
+
+    <!-- Secret Questions -->
+    <string name="question1">Favorite Sports?</string>
+    <string name="question2">Favorite TV Show?</string>
+    <string name="question3">Your Mom\'s Middle Name?</string>
+    <string-array name="list_questions">
+        <item>@string/question1</item>
+        <item>@string/question2</item>
+        <item>@string/question3</item>
+    </string-array>
+</resources>
