@@ -26,12 +26,12 @@
             android:layout_height="wrap_content"
             android:text="Appointment Form:"
             android:textColor="@color/colorPrimary"
-            android:textSize="24sp" />
+            android:textSize="16sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:orientation="vertical"
             android:weightSum="1">
 
@@ -107,24 +107,32 @@
             android:gravity="end"
             android:orientation="horizontal">
 
-            <Button
+            <TextView
                 android:id="@+id/cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_button_stroke"
                 android:text="CANCEL"
+                android:padding="8dp"
+                android:paddingEnd="20dp"
+                android:paddingStart="20dp"
+                android:clickable="true"
                 android:textColor="@color/gray"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
 
-            <Button
+            <TextView
                 android:id="@+id/send"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:padding="8dp"
+                android:paddingEnd="20dp"
+                android:paddingStart="20dp"
+                android:clickable="true"
                 android:background="@drawable/rounded_button_solid"
                 android:text="SEND"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>
 
