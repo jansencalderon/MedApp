@@ -50,4 +50,5 @@ public class Constants {
     public static final String EDIT = "editKey";
 
 
+    public static final String CLINIC_ID = "clinicId" ;
 }

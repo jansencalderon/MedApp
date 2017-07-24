@@ -14,9 +14,9 @@
         android:title="Find Clinics"
         android:checkable="false" />
     <item
-        android:id="@+id/events"
+        android:id="@+id/appointments"
         android:icon="@drawable/ic_trans"
-        android:title="Transactions"
+        android:title="Appointments"
         android:checkable="false" />
     <item
         android:id="@+id/logout"

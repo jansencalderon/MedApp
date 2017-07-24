@@ -43,7 +43,8 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".ui.clinic.ClinicActivity" />
-        <activity android:name=".ui.clinic.form.ClinicAppointmentActivity"></activity>
+        <activity android:name=".ui.clinic.form.ClinicAppointmentActivity" />
+        <activity android:name=".ui.appointments.AppointmentActivity"></activity>
     </application>
 
 </manifest>

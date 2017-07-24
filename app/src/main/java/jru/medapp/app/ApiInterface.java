@@ -2,7 +2,9 @@ package jru.medapp.app;
 
 
 import java.util.List;
+import java.util.Map;
 
+import jru.medapp.model.data.Appointment;
 import jru.medapp.model.data.Clinic;
 import jru.medapp.model.data.User;
 import jru.medapp.model.response.LoginResponse;
@@ -11,6 +13,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -98,4 +101,14 @@ public interface ApiInterface {
 
     @POST("getClinics")
     Call<List<Clinic>> getClinics();
+
+
+    @POST("setAppointment")
+    @FormUrlEncoded
+    Call<ResultResponse> setAppointment(@FieldMap Map<String, String> params);
+
+
+    @POST("getAppointments")
+    @FormUrlEncoded
+    Call<List<Appointment>> getAppointments(@Field("user_id") String user_id);
 }

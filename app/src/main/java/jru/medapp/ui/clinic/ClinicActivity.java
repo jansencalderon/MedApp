@@ -21,20 +21,21 @@ import jru.medapp.databinding.ActivityClinicBinding;
 import jru.medapp.databinding.DialogAppointmentFormBinding;
 import jru.medapp.databinding.DialogNearestBinding;
 import jru.medapp.model.data.Clinic;
+import jru.medapp.ui.clinic.form.ClinicAppointmentActivity;
+import jru.medapp.ui.main.MainActivity;
 import jru.medapp.ui.map.MapActivity;
 
 public class ClinicActivity extends MvpActivity<ClinicView, ClinicPresenter> implements ClinicView {
 
     ActivityClinicBinding binding;
-    private Realm realm;
+    private Clinic clinic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_clinic);
         binding.setView(getMvpView());
-        realm = Realm.getDefaultInstance();
-
+        presenter.onStart();
 
         setSupportActionBar(binding.toolbar);
         if (getSupportActionBar() != null)
@@ -43,7 +44,7 @@ public class ClinicActivity extends MvpActivity<ClinicView, ClinicPresenter> imp
 
 
         Intent i = getIntent();
-        Clinic clinic = realm.where(Clinic.class).equalTo("clinicId", i.getIntExtra("id", 0)).findFirst();
+        clinic = presenter.getClinic(i.getIntExtra(Constants.ID, 0));
         binding.setClinic(clinic);
 
         switch (clinic.getClinicImage()) {
@@ -63,26 +64,9 @@ public class ClinicActivity extends MvpActivity<ClinicView, ClinicPresenter> imp
 
     @Override
     public void setAppointment() {
-        DialogAppointmentFormBinding dialogBinding = DataBindingUtil.inflate(
-                getLayoutInflater(),
-                R.layout.dialog_appointment_form,
-                null,
-                false);
-        final Dialog dialog = new Dialog(ClinicActivity.this);
-        dialog.setContentView(dialogBinding.getRoot());
-        dialogBinding.send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(ClinicActivity.this, "Feature not available yet", Toast.LENGTH_SHORT).show();
-            }
-        });
-        dialogBinding.cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
+        Intent intent = new Intent(ClinicActivity.this, ClinicAppointmentActivity.class);
+        intent.putExtra(Constants.ID, clinic.getClinicId());
+        startActivity(intent);
     }
 
     @NonNull
@@ -95,7 +79,7 @@ public class ClinicActivity extends MvpActivity<ClinicView, ClinicPresenter> imp
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        realm.close();
+        presenter.onStop();
     }
 
     @Override

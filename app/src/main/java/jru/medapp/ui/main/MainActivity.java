@@ -32,6 +32,7 @@ import jru.medapp.app.Constants;
 import jru.medapp.databinding.ActivityMainBinding;
 import jru.medapp.model.data.Clinic;
 import jru.medapp.model.data.User;
+import jru.medapp.ui.appointments.AppointmentActivity;
 import jru.medapp.ui.clinic.ClinicActivity;
 import jru.medapp.ui.login.LoginActivity;
 import jru.medapp.ui.map.MapActivity;
@@ -207,8 +208,8 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
         } else if (id == R.id.map) {
             startActivity(new Intent(this, MapActivity.class));
             binding.navigationView.getMenu().getItem(0).setChecked(true);
-        } else if (id == R.id.events) {
-            // startActivity(new Intent(this, EventsActivity.class));
+        } else if (id == R.id.appointments) {
+            startActivity(new Intent(this, AppointmentActivity.class));
             binding.navigationView.getMenu().getItem(0).setChecked(true);
         } else if (id == R.id.logout) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
