@@ -31,7 +31,8 @@ class AppointmentPresenter extends MvpNullObjectBasePresenter<AppointmentView> {
         getAppointments();
     }
 
-    public void getAppointments(){
+    void getAppointments(){
+        getView().startLoading();
         App.getInstance().getApiInterface().getAppointments(String.valueOf(user.getUserId())).enqueue(new Callback<List<Appointment>>() {
             @Override
             public void onResponse(Call<List<Appointment>> call, final Response<List<Appointment>> response) {

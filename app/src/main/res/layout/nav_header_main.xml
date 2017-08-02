@@ -8,36 +8,50 @@
             type="jru.medapp.model.data.User" />
     </data>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:orientation="horizontal"
-        android:paddingTop="20dp"
-        android:gravity="center_vertical"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark">
-
-        <ImageView
-            android:id="@+id/userImage"
-            android:layout_margin="16dp"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/ic_person" />
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/viewProfile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingTop="20dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-            <TextView
-                android:id="@+id/name"
+            <ImageView
+                android:id="@+id/userImage"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_person" />
+
+            <LinearLayout
+                android:id="@+id/viewProfile"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?selectableItemBackground"
-                android:text="@{user.fullName}"
-                android:textColor="@color/white"
-                android:textSize="20sp" />
-        </LinearLayout>
+                android:layout_height="wrap_content">
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{user.fullName}"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+        <TextView
+            android:id="@+id/edit"
+            android:layout_width="wrap_content"
+            android:text="EDIT INFO"
+            android:textColor="#7effffff"
+            android:padding="6dp"
+            android:background="?selectableItemBackground"
+            android:textSize="12sp"
+            android:layout_gravity="bottom|end"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
 </layout>

@@ -44,7 +44,8 @@
 
         <activity android:name=".ui.clinic.ClinicActivity" />
         <activity android:name=".ui.clinic.form.ClinicAppointmentActivity" />
-        <activity android:name=".ui.appointments.AppointmentActivity"></activity>
+        <activity android:name=".ui.appointments.AppointmentActivity" />
+        <activity android:name=".ui.profile.ProfileActivity" />
     </application>
 
 </manifest>

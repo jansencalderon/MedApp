@@ -36,6 +36,7 @@ import jru.medapp.ui.appointments.AppointmentActivity;
 import jru.medapp.ui.clinic.ClinicActivity;
 import jru.medapp.ui.login.LoginActivity;
 import jru.medapp.ui.map.MapActivity;
+import jru.medapp.ui.profile.ProfileActivity;
 
 
 public class MainActivity extends MvpActivity<MainView, MainPresenter> implements MainView, NavigationView.OnNavigationItemSelectedListener {
@@ -66,13 +67,13 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
 
 
         //display data
-      /* binding.navigationView.getHeaderView(0).findViewById(R.id.viewProfile).setOnClickListener(new View.OnClickListener() {
+             binding.navigationView.getHeaderView(0).findViewById(R.id.edit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, ProfileActivity.class));
             }
         });
-        */
+
 
         binding.navigationView.getMenu().getItem(0).setChecked(true);
 

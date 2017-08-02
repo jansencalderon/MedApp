@@ -75,6 +75,13 @@ public interface ApiInterface {
                           @Field(Constants.BIRTHDAY) String birthday,
                           @Field(Constants.ADDRESS) String address);
 
+
+    @FormUrlEncoded
+    @POST("changePassword")
+    Call<ResultResponse> changePassword(@Field(Constants.USER_ID) String user_id,
+                          @Field(Constants.PASSWORD)String password);
+
+
     @FormUrlEncoded
     @POST("passwordAlert")
     Call<ResultResponse> passwordAlert(@Field(Constants.EMAIL) String email);
