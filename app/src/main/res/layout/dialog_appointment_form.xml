@@ -68,13 +68,14 @@
                 android:layout_marginBottom="6dp"
                 android:text="Choose Slot: "
                 android:textSize="14sp" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:id="@+id/slot_layout"
                 android:orientation="horizontal"
                 android:weightSum="1">
+
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -84,6 +85,13 @@
                     android:orientation="vertical"
                     android:padding="10dp">
 
+
+                    <ProgressBar
+                        android:layout_width="50dp"
+                        android:layout_gravity="center"
+                        android:id="@+id/slot_progress_am"
+                        android:layout_margin="20dp"
+                        android:layout_height="50dp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -108,6 +116,13 @@
                     android:orientation="vertical"
                     android:padding="10dp">
 
+
+                    <ProgressBar
+                        android:layout_width="50dp"
+                        android:id="@+id/slot_progress_pm"
+                        android:layout_gravity="center"
+                        android:layout_margin="20dp"
+                        android:layout_height="50dp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

@@ -11,7 +11,7 @@ import io.realm.RealmObject;
  * Created by Jansen on 7/23/2017.
  */
 
-public class Appointment extends RealmObject{
+public class AppointmentSlot extends RealmObject{
 
     @SerializedName("trans_id")
     @Expose
@@ -93,6 +93,7 @@ public class Appointment extends RealmObject{
     public void setClinic(Clinic clinic) {
         this.clinic = clinic;
     }
+
 
     public String getTransTimeSlot() {
         return transTimeSlot;

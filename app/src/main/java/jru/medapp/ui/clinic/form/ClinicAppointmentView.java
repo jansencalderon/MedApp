@@ -20,4 +20,14 @@ public interface ClinicAppointmentView extends MvpView {
     void stopLoading();
 
     void onSetSuccess();
+
+    void onAM();
+
+    void onPM();
+
+    void slotStartLoading();
+
+    void onSetSlots();
+
+    void slotStopLoading();
 }

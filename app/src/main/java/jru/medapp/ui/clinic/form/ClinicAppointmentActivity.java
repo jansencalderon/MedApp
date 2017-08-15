@@ -7,10 +7,12 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -39,6 +41,7 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
     private String pickedDate;
     private Date closingdate;
     private ProgressDialog progressDialog;
+    private String timeSlot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +86,7 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
             @Override
             public void onDateSelected(int year, int month, int day, int index) {
                 pickedDate = year + "-" + (month + 1) +"-"+ day;
+                presenter.getSlotsOnServer(pickedDate, clinic.getClinicId());
             }
         });
 
@@ -95,12 +99,16 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
 
     @Override
     public void send() {
-        presenter.setAppointment(clinic.getClinicId(), App.getUser().getUserId(), pickedDate + " " + pickedTime, binding.etNote.getText().toString());
+       if(timeSlot.equals("")|| timeSlot == null){
+            showAlert("Pick Time Slot");
+       }else {
+           presenter.setAppointment(clinic.getClinicId(), App.getUser().getUserId(), pickedDate.trim(), timeSlot, binding.etNote.getText().toString());
+       }
     }
 
     @Override
     public void pickTime() {
-        final Calendar c = Calendar.getInstance();
+      /*  final Calendar c = Calendar.getInstance();
         int mHour = c.get(Calendar.HOUR_OF_DAY);
         int mMinute = c.get(Calendar.MINUTE);
 
@@ -162,6 +170,8 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
                     }
                 }, mHour, mMinute, false);
         timePickerDialog.show();
+
+        */
     }
 
     @Override
@@ -187,11 +197,81 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
         finish();
     }
 
+    @Override
+    public void onAM(){
+        try {
+            if (presenter.appointmentSlotsAM().size() >= clinic.getClinicSlotMax()) {
+                binding.pmLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_slight_red));
+                showAlert("Slots Full");
+                return;
+            }
+
+            timeSlot = "AM";
+            binding.amLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_button_blue));
+
+            //set PM layout
+                binding.pmLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_slight_gray));
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onPM(){
+        try {
+            if (presenter.appointmentSlotsPM().size() >= clinic.getClinicSlotMax()) {
+                binding.pmLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_slight_red));
+                showAlert("Slots Full");
+                return;
+            }
+
+            timeSlot = "PM";
+            binding.pmLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_button_blue));
+
+
+            //set AM layout
+                binding.amLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_slight_gray));
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void slotStartLoading() {
+        binding.slotProgressAm.setVisibility(View.VISIBLE);
+        binding.slotProgressPm.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void slotStopLoading() {
+        binding.slotProgressAm.setVisibility(View.GONE);
+        binding.slotProgressPm.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onSetSlots() {
+        binding.timeSlotAM.setText(presenter.appointmentSlotsAM().size()+"/"+clinic.getClinicSlotMax());
+        binding.timeSlotPM.setText(presenter.appointmentSlotsPM().size()+"/"+clinic.getClinicSlotMax());
+        binding.amLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_slight_gray));
+        binding.pmLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_slight_gray));
+
+        if (presenter.appointmentSlotsAM().size()  >=  clinic.getClinicSlotMax()) {
+            binding.pmLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_slight_red));
+        }
+
+        if (presenter.appointmentSlotsPM().size()  >=  clinic.getClinicSlotMax()) {
+            binding.pmLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_slight_red));
+        }
+
+    }
+
     @NonNull
     @Override
     public ClinicAppointmentPresenter createPresenter() {
         return new ClinicAppointmentPresenter();
     }
+
+
 
 
     @Override

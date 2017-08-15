@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import jru.medapp.model.data.Appointment;
+import jru.medapp.model.data.AppointmentSlot;
 import jru.medapp.model.data.Clinic;
 import jru.medapp.model.data.User;
 import jru.medapp.model.response.LoginResponse;
@@ -118,4 +119,10 @@ public interface ApiInterface {
     @POST("getAppointments")
     @FormUrlEncoded
     Call<List<Appointment>> getAppointments(@Field("user_id") String user_id);
+
+    @POST("getSlots")
+    @FormUrlEncoded
+    Call<List<AppointmentSlot>> getSlots(@Field("dates") String dates,
+                                         @Field("clinic_id") int
+                                             clinic_id);
 }
