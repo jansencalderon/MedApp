@@ -2,6 +2,8 @@ package jru.medapp.ui.clinic.form;
 
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
+import jru.medapp.model.data.Slot;
+
 /**
  * Created by Jansen on 7/21/2017.
  */
@@ -21,13 +23,7 @@ public interface ClinicAppointmentView extends MvpView {
 
     void onSetSuccess();
 
-    void onAM();
-
-    void onPM();
-
-    void slotStartLoading();
+    void onSlotChosed(Slot slot);
 
     void onSetSlots();
-
-    void slotStopLoading();
 }

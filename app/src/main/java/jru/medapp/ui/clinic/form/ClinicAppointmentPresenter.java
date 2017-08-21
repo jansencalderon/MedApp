@@ -41,7 +41,6 @@ public class ClinicAppointmentPresenter extends MvpNullObjectBasePresenter<Clini
     }
 
     public void setAppointment(int clinicId, int userId, String date, String time_slot,String note) {
-        getView().showAlert(clinicId +" "+userId+" "+date+" "+note);
         getView().startLoading();
         Map<String, String> params = new HashMap<>();
         params.put("clinic_id", clinicId+"");
@@ -86,7 +85,7 @@ public class ClinicAppointmentPresenter extends MvpNullObjectBasePresenter<Clini
         });
     }
 
-    void getSlotsOnServer(String date, int clinicId){
+    /*void getSlotsOnServer(String date, int clinicId){
         getView().slotStartLoading();
         App.getInstance().getApiInterface().getSlots(date,clinicId).enqueue(new Callback<List<AppointmentSlot>>() {
             @Override
@@ -132,13 +131,61 @@ public class ClinicAppointmentPresenter extends MvpNullObjectBasePresenter<Clini
                 getView().showAlert("Error Connecting to Server");
             }
         });
+    }*/
+
+    void getSlotsOnServer(String date, int clinicId){
+        getView().startLoading();
+        App.getInstance().getApiInterface().getSlots(date,clinicId).enqueue(new Callback<List<AppointmentSlot>>() {
+            @Override
+            public void onResponse(Call<List<AppointmentSlot>> call, final Response<List<AppointmentSlot>> response) {
+                getView().stopLoading();
+                if (response.isSuccessful()) {
+                    final Realm realm = Realm.getDefaultInstance();
+                    realm.executeTransactionAsync(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            realm.delete(AppointmentSlot.class);
+                            realm.copyToRealmOrUpdate(response.body());
+                        }
+                    }, new Realm.Transaction.OnSuccess() {
+                        @Override
+                        public void onSuccess() {
+                            realm.close();
+                            getView().onSetSlots();
+                        }
+                    }, new Realm.Transaction.OnError() {
+                        @Override
+                        public void onError(Throwable error) {
+                            realm.close();
+                            Log.e(TAG, "onError: Unable to save Data", error);
+                        }
+                    });
+                }else {
+                    try {
+                        String errorBody = response.errorBody().string();
+                        getView().showAlert(errorBody);
+                    } catch (IOException e) {
+                        Log.e(TAG, "onResponse: Error parsing error body as string", e);
+                        getView().showAlert(response.message() != null ?
+                                response.message() : "Unknown Exception");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<AppointmentSlot>> call, Throwable t) {
+                Log.e(TAG, "onFailure: Error calling register api", t);
+                getView().stopLoading();
+                getView().showAlert("Error Connecting to Server");
+            }
+        });
     }
 
-    List<AppointmentSlot> appointmentSlotsPM(){
+   /* List<AppointmentSlot> appointmentSlotsPM(){
         return realm.where(AppointmentSlot.class).equalTo("transTimeSlot", "PM").findAll();
     }
 
     List<AppointmentSlot> appointmentSlotsAM(){
         return realm.where(AppointmentSlot.class).equalTo("transTimeSlot", "AM").findAll();
-    }
+    }*/
 }

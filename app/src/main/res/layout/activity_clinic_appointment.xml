@@ -42,100 +42,44 @@
             android:padding="10dp">
 
             <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:weightSum="1">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="6dp"
-                android:text="Choose Slot: "
-                android:textSize="14sp" />
-            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:id="@+id/slot_layout"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:weightSum="1">
 
-
-                <LinearLayout
+                <TextView
                     android:layout_width="wrap_content"
-                    android:onClick="@{()->view.onAM()}"
-                    android:id="@+id/amLayout"
-                    android:layout_height="100dp"
-                    android:background="@drawable/rounded_slight_gray"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="10dp">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="6dp"
+                    android:text="Choose Slot: "
+                    android:textSize="14sp" />
 
-
-                    <ProgressBar
-                        android:layout_width="50dp"
-                        android:layout_gravity="center"
-                        android:id="@+id/slot_progress_am"
-                        android:layout_margin="20dp"
-                        android:visibility="gone"
-                        android:layout_height="50dp" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:minEms="2"
-                        android:id="@+id/timeSlotAM"
-                        android:textColor="@color/white"
-                        android:textSize="36sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="AM"
-                        android:textColor="@color/white"
-                        android:textSize="16sp" />
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/slotTime"
                     android:layout_width="wrap_content"
-                    android:layout_height="100dp"
-                    android:layout_marginStart="10dp"
-                    android:id="@+id/pmLayout"
-                    android:onClick="@{()->view.onPM()}"
-                    android:background="@drawable/rounded_slight_gray"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="10dp">
+                    android:textSize="18sp"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"/>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/rounded_button_stroke"
+                    android:clickable="true"
+                    android:onClick="@{()->view.pickTime()}"
+                    android:padding="8dp"
+                    android:paddingEnd="20dp"
+                    android:paddingStart="20dp"
+                    android:text="CLICK HERE FOR SLOTS"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
 
-                    <ProgressBar
-                        android:layout_width="50dp"
-                        android:id="@+id/slot_progress_pm"
-                        android:visibility="gone"
-                        android:layout_gravity="center"
-                        android:layout_margin="20dp"
-                        android:layout_height="50dp" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:id="@+id/timeSlotPM"
-                        android:minEms="2"
-                        android:textColor="@color/white"
-                        android:textSize="36sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="PM"
-                        android:textColor="@color/white"
-                        android:textSize="16sp" />
-                </LinearLayout>
             </LinearLayout>
 
-        </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

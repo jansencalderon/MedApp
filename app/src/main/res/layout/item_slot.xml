@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="view"
+            type="jru.medapp.ui.clinic.form.ClinicAppointmentView" />
+
+        <variable
+            name="slot"
+            type="jru.medapp.model.data.Slot" />
+
+        <variable
+            name="contentVisible"
+            type="boolean" />
+
+    </data>
+
+    <TextView
+        android:id="@+id/slotText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_slight_primary"
+        android:text="@{slot.slotTime}"
+        android:padding="6dp"
+        android:onClick="@{()->view.onSlotChosed(slot)}"
+        android:minWidth="220dp"
+        android:clickable="true"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+</layout>

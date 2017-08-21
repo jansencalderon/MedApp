@@ -80,7 +80,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("changePassword")
     Call<ResultResponse> changePassword(@Field(Constants.USER_ID) String user_id,
-                          @Field(Constants.PASSWORD)String password);
+                                        @Field(Constants.PASSWORD) String password);
 
 
     @FormUrlEncoded
@@ -123,6 +123,5 @@ public interface ApiInterface {
     @POST("getSlots")
     @FormUrlEncoded
     Call<List<AppointmentSlot>> getSlots(@Field("dates") String dates,
-                                         @Field("clinic_id") int
-                                             clinic_id);
+                                         @Field("clinic_id") int clinic_id);
 }
