@@ -76,10 +76,12 @@
                 <TextView
                     android:fontFamily="sans-serif-light"
                     android:layout_marginTop="6dp"
+                    android:padding="4dp"
+                    android:background="@drawable/shape_highlight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{clinic.clinicHours}"
-                    android:textSize="14sp" />
+                    android:textSize="12sp" />
 
 
 

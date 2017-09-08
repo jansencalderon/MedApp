@@ -56,9 +56,7 @@ public class ClinicAppointmentPresenter extends MvpNullObjectBasePresenter<Clini
                     switch (response.body().getResult()) {
                         case Constants.SUCCESS:
                             getView().onSetSuccess();
-                            break;
-                        case Constants.EMAIL_EXIST:
-                            getView().showAlert("Email already exists");
+
                             break;
                         default:
                             getView().showAlert(String.valueOf(R.string.oops));

@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.github.badoualy.datepicker.DatePickerTimeline;
@@ -24,9 +25,11 @@ import jru.medapp.R;
 import jru.medapp.app.App;
 import jru.medapp.app.Constants;
 import jru.medapp.databinding.ActivityClinicAppointmentBinding;
+import jru.medapp.databinding.DialogAppointmentSuccessBinding;
 import jru.medapp.databinding.DialogSlotsBinding;
 import jru.medapp.model.data.Clinic;
 import jru.medapp.model.data.Slot;
+import jru.medapp.utils.DateTimeUtils;
 
 public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView, ClinicAppointmentPresenter> implements ClinicAppointmentView {
 
@@ -72,18 +75,18 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
         if (c.getTime().after(closingdate)) {
             binding.timeline.setFirstVisibleDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE) + 1);
             binding.timeline.setSelectedDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE) + 1);
-            pickedDate = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH)+1) +"-"+ c.get(Calendar.DATE);
+            pickedDate = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DATE);
         } else {
             binding.timeline.setFirstVisibleDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE));
             binding.timeline.setSelectedDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE));
-            pickedDate = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH)+1) +"-"+ c.get(Calendar.DATE);
+            pickedDate = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DATE);
         }
         c.add(Calendar.DATE, 7);
         binding.timeline.setLastVisibleDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE));
         binding.timeline.setOnDateSelectedListener(new DatePickerTimeline.OnDateSelectedListener() {
             @Override
             public void onDateSelected(int year, int month, int day, int index) {
-                pickedDate = year + "-" + (month + 1) +"-"+ day;
+                pickedDate = year + "-" + (month + 1) + "-" + day;
                 presenter.getSlotsOnServer(pickedDate, clinic.getClinicId());
             }
         });
@@ -97,16 +100,16 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
 
     @Override
     public void send() {
-       if(timeSlot.equals("")|| timeSlot == null){
+        if (timeSlot.equals("") || timeSlot == null) {
             showAlert("Pick Time Slot");
-       }else {
-           presenter.setAppointment(clinic.getClinicId(), App.getUser().getUserId(), pickedDate.trim(), timeSlot, binding.etNote.getText().toString());
-       }
+        } else {
+            presenter.setAppointment(clinic.getClinicId(), App.getUser().getUserId(), pickedDate.trim(), timeSlot, binding.etNote.getText().toString());
+        }
     }
 
     @Override
     public void pickTime() {
-        if(slots !=null){
+        if (slots != null) {
             dialog = new Dialog(ClinicAppointmentActivity.this);
             final DialogSlotsBinding dialogBinding = DataBindingUtil.inflate(
                     getLayoutInflater(),
@@ -121,8 +124,7 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
             dialog.setCanceledOnTouchOutside(true);
             dialog.setContentView(dialogBinding.getRoot());
             dialog.show();
-        }
-        else {
+        } else {
             showAlert("Pick Date First");
         }
 
@@ -163,15 +165,34 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
 
     @Override
     public void onSetSuccess() {
-        finish();
+        DialogAppointmentSuccessBinding dialogBinding = DataBindingUtil.inflate(
+                getLayoutInflater(),
+                R.layout.dialog_appointment_success,
+                null,
+                false);
+        dialogBinding.clinicName.setText(clinic.getClinicName());
+        dialogBinding.patientName.setText(App.getUser().getFullName());
+        dialogBinding.date.setText(pickedDate);
+        dialogBinding.time.setText(binding.slotTime.getText().toString());
+
+        final Dialog dialog = new Dialog(ClinicAppointmentActivity.this);
+        dialog.setContentView(dialogBinding.getRoot());
+        dialogBinding.close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                ClinicAppointmentActivity.this.finish();
+            }
+        });
+        dialog.show();
     }
 
     @Override
-    public void onSlotChosed(Slot slot){
+    public void onSlotChosed(Slot slot) {
         binding.slotTime.setText(slot.getSlotTime().trim());
         timeSlot = slot.getSlotTime();
 
-        if(dialog.isShowing()){
+        if (dialog.isShowing()) {
             dialog.dismiss();
         }
     }
@@ -180,7 +201,7 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
     @Override
     public void onSetSlots() {
 
-        if(slots!=null){
+        if (slots != null) {
             slots.clear();
         }
 
@@ -241,8 +262,6 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
     public ClinicAppointmentPresenter createPresenter() {
         return new ClinicAppointmentPresenter();
     }
-
-
 
 
     @Override
