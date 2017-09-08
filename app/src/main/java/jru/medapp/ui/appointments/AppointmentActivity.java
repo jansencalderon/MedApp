@@ -1,5 +1,6 @@
 package jru.medapp.ui.appointments;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,6 +17,9 @@ import java.util.List;
 import jru.medapp.R;
 import jru.medapp.databinding.ActivityAppointmentBinding;
 import jru.medapp.model.data.Appointment;
+import jru.medapp.model.data.Clinic;
+import jru.medapp.ui.clinic.ClinicActivity;
+import jru.medapp.ui.main.MainActivity;
 import jru.medapp.ui.main.MainListAdapter;
 
 public class AppointmentActivity extends MvpActivity<AppointmentView, AppointmentPresenter> implements AppointmentView {
@@ -74,6 +78,14 @@ public class AppointmentActivity extends MvpActivity<AppointmentView, Appointmen
     @Override
     public void OnItemClicked(Appointment item) {
 
+    }
+
+    @Override
+    public void OnClinicClicked
+            (Clinic clinic) {
+        Intent intent = new Intent(AppointmentActivity.this, ClinicActivity.class);
+        intent.putExtra("id", clinic.getClinicId());
+        startActivity(intent);
     }
 
     @NonNull

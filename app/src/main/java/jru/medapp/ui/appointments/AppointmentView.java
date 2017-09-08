@@ -5,6 +5,7 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 import java.util.List;
 
 import jru.medapp.model.data.Appointment;
+import jru.medapp.model.data.Clinic;
 
 /**
  * Created by Jansen on 7/22/2017.
@@ -21,4 +22,7 @@ public interface AppointmentView extends MvpView {
     void setList(List<Appointment> list);
 
     void OnItemClicked(Appointment item);
+
+    void OnClinicClicked
+            (Clinic clinic);
 }

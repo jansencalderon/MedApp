@@ -7,19 +7,6 @@
         android:minWidth="300dp"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/dialog_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
-            android:layout_margin="6dp"
-            android:background="@drawable/rounded_button_stroke"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="HIDE NEAREST RESTAURANTS"
-            android:textColor="@color/colorPrimary"
-            android:visibility="gone" />
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/nearestRecyclerView"
             android:layout_width="match_parent"

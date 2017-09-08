@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Jansen on 7/9/2017.
@@ -12,6 +13,7 @@ import io.realm.RealmObject;
 public class Clinic extends RealmObject {
     @SerializedName("clinic_id")
     @Expose
+    @PrimaryKey
     private Integer clinicId;
     @SerializedName("clinic_name")
     @Expose
