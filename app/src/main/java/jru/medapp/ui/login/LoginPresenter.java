@@ -64,12 +64,13 @@ public class LoginPresenter extends MvpNullObjectBasePresenter<LoginView> {
                                         case Constants.WRONG_PASSWORD:
                                             getView().showAlert("Wrong Password");
                                             login_counter = login_counter + 1;
-                                            if (login_counter == 10) {
+                                            if (login_counter == 5) {
                                                 App.getInstance().getApiInterface().passwordAlert(email).enqueue(new Callback<ResultResponse>() {
                                                     @Override
                                                     public void onResponse(Call<ResultResponse> call, Response<ResultResponse> response) {
                                                         if (response.body().getResult().equals(Constants.SUCCESS)) {
-                                                            getView().showAlert("Admin has been notified of your suspicious activity!");
+                                                            getView().showAlert("You reached the limit of 5 login attempt\n" +
+                                                                    "Admin has been notified of your suspicious activity!");
                                                         }
 
                                                     }

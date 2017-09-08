@@ -9,6 +9,7 @@ import android.databinding.DataBindingUtil;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -92,7 +94,8 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
                 "San Juan"
         };
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getSupportActionBar().getThemedContext(), R.layout.spinner_list_style, items);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         dropdown.setAdapter(adapter);
         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -222,6 +225,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
             dialog.show();
         } else {
             showAlert("No clinics available at " + binding.spinner1.getSelectedItem().toString());
+            binding.buttonShowNearest.setVisibility(View.VISIBLE);
         }
     }
 

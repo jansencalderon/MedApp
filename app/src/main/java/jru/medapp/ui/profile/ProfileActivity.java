@@ -121,7 +121,7 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
     }
 
     @Override
-    public void onChangePassword(){
+    public void onChangePassword() {
         dialog = new Dialog(ProfileActivity.this);
         final DialogChangePasswordBinding dialogBinding = DataBindingUtil.inflate(
                 getLayoutInflater(),
@@ -138,8 +138,8 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
             @Override
             public void onClick(View v) {
                 presenter.changePassword(dialogBinding.etCurrPassword.getText().toString(),
-                                         dialogBinding.etNewPassword.getText().toString(),
-                                        dialogBinding.etConfirmPass.getText().toString());
+                        dialogBinding.etNewPassword.getText().toString(),
+                        dialogBinding.etConfirmPass.getText().toString());
             }
         });
         dialog.setContentView(dialogBinding.getRoot());
@@ -164,7 +164,14 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
-                binding.birthday.setText(dateFormatter.format(newDate.getTime()));
+
+                if ((Calendar.getInstance().get(Calendar.YEAR) - year) >= 8) {
+                    binding.birthday.setText(dateFormatter.format(newDate.getTime()));
+                } else {
+                    showAlert("You must be 8 years old and above");
+                }
+
+
             }
 
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
@@ -174,7 +181,7 @@ public class ProfileActivity extends MvpActivity<ProfileView, ProfilePresenter> 
 
     @Override
     public void onPasswordChanged() {
-        if(dialog.isShowing()){
+        if (dialog.isShowing()) {
             dialog.dismiss();
             showAlert("Password Successfully Changed!");
         }

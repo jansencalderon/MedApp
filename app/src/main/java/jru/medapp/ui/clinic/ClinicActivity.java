@@ -40,7 +40,7 @@ public class ClinicActivity extends MvpActivity<ClinicView, ClinicPresenter> imp
         setSupportActionBar(binding.toolbar);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
 
 
         Intent i = getIntent();

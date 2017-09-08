@@ -1,0 +1,9 @@
+<!--Used for the Spinner title indicator-->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/spinner_list_item"
+    style="@style/TextAppearance.AppCompat.Title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="16sp"
+    android:ellipsize="marquee"
+    android:textColor="@android:color/white" />

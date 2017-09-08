@@ -38,6 +38,8 @@ public class ProfilePresenter extends MvpNullObjectBasePresenter<ProfileView> {
     public void updateUser(String userId, String firstName, String lastName, String contact, String birthday, String address) {
         if (firstName.equals("") || lastName.equals("") || birthday.equals("") || contact.equals("") || address.equals("")) {
             getView().showAlert("Fill-up all fields");
+        } else if (contact.length() < 11) {
+            getView().showAlert("Contact number must be 11 digit");
         } else {
             getView().startLoading();
             App.getInstance().getApiInterface().updateUser(userId, firstName, lastName, contact, birthday, address)

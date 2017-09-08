@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -47,7 +48,7 @@ public class RegisterActivity extends MvpViewStateActivity<RegisterView, Registe
         setSupportActionBar(binding.toolbar);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         Spinner dropdown = binding.spinner1;
         String[] questions = getResources().getStringArray(R.array.list_questions);
@@ -155,7 +156,7 @@ public class RegisterActivity extends MvpViewStateActivity<RegisterView, Registe
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         RegisterActivity.this.finish();
-                       // Toast.makeText(RegisterActivity.this, "An email has been sent to your email for verification!", Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(RegisterActivity.this, "An email has been sent to your email for verification!", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .show();
@@ -163,7 +164,7 @@ public class RegisterActivity extends MvpViewStateActivity<RegisterView, Registe
 
 
     @Override
-    public void onSecret(){
+    public void onSecret() {
 
     }
 
@@ -176,7 +177,12 @@ public class RegisterActivity extends MvpViewStateActivity<RegisterView, Registe
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
-                binding.etBday.setText(dateFormatter.format(newDate.getTime()));
+
+                if ((Calendar.getInstance().get(Calendar.YEAR)-year) >= 8) {
+                    binding.etBday.setText(dateFormatter.format(newDate.getTime()));
+                } else {
+                    showAlert("You must be 8 years old and above");
+                }
             }
 
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
