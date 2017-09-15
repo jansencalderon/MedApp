@@ -4,8 +4,8 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.MenuItem;
 import android.view.View;
@@ -189,7 +189,7 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
 
     @Override
     public void onSlotChosed(Slot slot) {
-        binding.slotTime.setText(slot.getSlotTime().trim());
+        binding.slotTime.setText(DateTimeUtils.TO_AM_PM(slot.getSlotTime().trim()));
         timeSlot = slot.getSlotTime();
 
         if (dialog.isShowing()) {
@@ -205,54 +205,18 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
             slots.clear();
         }
 
+        int open = Integer.parseInt(clinic.getClinicHoursOpen().substring(0,2));
+        int close = Integer.parseInt(clinic.getClinicHoursClose().substring(0,2));
         slots = new ArrayList<>();
-        Slot slot1 = new Slot();
-        slot1.setSlotId(1);
-        slot1.setSlotTime("9:00 AM - 9:30 AM");
-        slot1.setSlotStatus("OPEN");
-        slots.add(slot1);
+        for(int i = open; i<close; i++){
+            Slot slot = new Slot();
+            slot.setSlotId(i);
+            slot.setSlotTime(i+":00:00");
+            slot.setSlotStatus("OPEN");
+            slots.add(slot);
+        }
 
-        Slot slot2 = new Slot();
-        slot2.setSlotId(2);
-        slot2.setSlotTime("9:30 AM - 10:00 AM");
-        slot2.setSlotStatus("OPEN");
-        slots.add(slot2);
 
-        Slot slot3 = new Slot();
-        slot3.setSlotId(3);
-        slot3.setSlotTime("10:00 AM - 10:30 AM");
-        slot3.setSlotStatus("OPEN");
-        slots.add(slot3);
-
-        Slot slot4 = new Slot();
-        slot4.setSlotId(4);
-        slot4.setSlotTime("10:30 AM - 11:00 AM");
-        slot4.setSlotStatus("OPEN");
-        slots.add(slot4);
-
-        Slot slot5 = new Slot();
-        slot5.setSlotId(5);
-        slot5.setSlotTime("11:00 AM - 11:30 AM");
-        slot5.setSlotStatus("OPEN");
-        slots.add(slot5);
-
-        Slot slot6 = new Slot();
-        slot6.setSlotId(6);
-        slot6.setSlotTime("11:30 AM - 12:00 PM");
-        slot6.setSlotStatus("OPEN");
-        slots.add(slot6);
-
-        Slot slot7 = new Slot();
-        slot7.setSlotId(7);
-        slot7.setSlotTime("12:00 PM - 12:30 PM");
-        slot7.setSlotStatus("OPEN");
-        slots.add(slot7);
-
-        Slot slot8 = new Slot();
-        slot8.setSlotId(8);
-        slot8.setSlotTime("12:30 PM - 1:30 PM");
-        slot8.setSlotStatus("OPEN");
-        slots.add(slot8);
 
 
     }

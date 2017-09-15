@@ -12,6 +12,7 @@
         <variable
             name="clinic"
             type="jru.medapp.model.data.Clinic" />
+        <import type="jru.medapp.utils.DateTimeUtils"/>
     </data>
 
     <LinearLayout
@@ -62,7 +63,7 @@
             android:fontFamily="sans-serif-light"
             android:padding="6dp"
             android:background="@drawable/shape_highlight"
-            android:text="@{clinic.clinicHours}"
+            android:text='@{DateTimeUtils.TO_AM_PM(clinic.clinicHoursOpen)+" - "+DateTimeUtils.TO_AM_PM(clinic.clinicHoursClose)}'
             android:textColor="@color/darkGray"
             android:textSize="16sp" />
 

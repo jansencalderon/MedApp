@@ -5,6 +5,7 @@
     <data>
 
         <import type="android.view.View" />
+        <import type="jru.medapp.utils.DateTimeUtils"/>
 
         <variable
             name="view"
@@ -17,7 +18,6 @@
         <variable
             name="contentVisible"
             type="boolean" />
-
     </data>
 
     <android.support.v7.widget.CardView
@@ -81,7 +81,7 @@
                     android:background="@drawable/shape_highlight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{clinic.clinicHours}"
+                    android:text='@{DateTimeUtils.TO_AM_PM(clinic.clinicHoursOpen)+" - "+DateTimeUtils.TO_AM_PM(clinic.clinicHoursClose)}'
                     android:textSize="12sp" />
 
 
