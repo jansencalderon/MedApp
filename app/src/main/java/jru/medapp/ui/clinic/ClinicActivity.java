@@ -44,7 +44,12 @@ public class ClinicActivity extends MvpActivity<ClinicView, ClinicPresenter> imp
 
 
         Intent i = getIntent();
-        clinic = presenter.getClinic(i.getIntExtra(Constants.ID, 0));
+        int id = i.getIntExtra(Constants.ID, -1);
+        if(id == -1){
+            finish();
+        }
+
+        clinic = presenter.getClinic(id);
         binding.setClinic(clinic);
 
         switch (clinic.getClinicImage()) {

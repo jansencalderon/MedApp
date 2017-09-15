@@ -18,7 +18,8 @@ class ClinicPresenter extends MvpNullObjectBasePresenter<ClinicView> {
     }
 
     Clinic getClinic(int id){
-        return realm.where(Clinic.class).equalTo(Constants.CLINIC_ID, id).findFirst();
+        Clinic clinic = realm.where(Clinic.class).equalTo(Constants.CLINIC_ID, id).findFirst();
+        return realm.copyToRealmOrUpdate(clinic);
     }
 
     void onStop() { realm.close();

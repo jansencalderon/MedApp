@@ -30,7 +30,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:clickable="true"
-        android:foreground="?android:selectableItemBackground"
         android:onClick="@{()->view.OnItemClicked(appointment)}"
         android:orientation="vertical">
 
@@ -79,6 +78,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:textColor="@color/hyperlink"
+                    android:onClick="@{()->view.OnClinicClicked(appointment.clinic)}"
                     android:text="@{appointment.clinic.clinicName}"
                     android:textSize="14sp" />
 

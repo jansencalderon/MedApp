@@ -1,14 +1,17 @@
 package jru.medapp.ui.map;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
@@ -156,7 +159,6 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMarkerClickListener(this);
-
         //create markers
         List<Clinic> clinics = realm.where(Clinic.class).findAll();
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
