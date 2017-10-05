@@ -114,6 +114,32 @@ public class DateTimeUtils {
         return convertedDate;
     }
 
+    public static Date StrToDate(String dateToConvert) {
+
+        DateFormat f1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+        Date convertedDate = null;
+        try {
+            convertedDate = f1.parse(dateToConvert);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return convertedDate;
+    }
+
+    public static Date StrToDateYYYY(String dateToConvert) {
+
+        DateFormat f1 = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        Date convertedDate = null;
+        try {
+            convertedDate = f1.parse(dateToConvert);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return convertedDate;
+    }
+
     public static String dateToday() {
         Date date = new Date();
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(date);
@@ -162,5 +188,15 @@ public class DateTimeUtils {
         return converted;
     }
 
+
+    public static Long hoursDiff(Date date1, Date date2){
+        long diff = date1.getTime() - date2.getTime();//as given
+
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+        long millis = TimeUnit.MILLISECONDS.toMillis(diff);
+
+        return millis;
+    }
 
 }

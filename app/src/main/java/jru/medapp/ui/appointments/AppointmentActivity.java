@@ -15,9 +15,11 @@ import com.hannesdorfmann.mosby.mvp.MvpActivity;
 import java.util.List;
 
 import jru.medapp.R;
+import jru.medapp.app.Constants;
 import jru.medapp.databinding.ActivityAppointmentBinding;
 import jru.medapp.model.data.Appointment;
 import jru.medapp.model.data.Clinic;
+import jru.medapp.ui.appointments.detail.AppointmentDetailActivity;
 import jru.medapp.ui.clinic.ClinicActivity;
 import jru.medapp.ui.main.MainActivity;
 import jru.medapp.ui.main.MainListAdapter;
@@ -65,7 +67,7 @@ public class AppointmentActivity extends MvpActivity<AppointmentView, Appointmen
     }
 
     @Override
-    public void showAlert(String s){
+    public void showAlert(String s) {
         Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 
@@ -77,7 +79,10 @@ public class AppointmentActivity extends MvpActivity<AppointmentView, Appointmen
 
     @Override
     public void OnItemClicked(Appointment item) {
-
+        Intent intent = new Intent(AppointmentActivity.this, AppointmentDetailActivity.class);
+        intent.putExtra(Constants.ID, item.getTransId());
+        intent.putExtra("from", "list");
+        startActivity(intent);
     }
 
     @Override

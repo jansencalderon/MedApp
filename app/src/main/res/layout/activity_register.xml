@@ -128,7 +128,7 @@
                     android:layout_height="wrap_content"
                     android:padding="6dp"
                     android:fontFamily="sans-serif-smallcaps"
-                    android:text="*Must be 8 years old and above"
+                    android:text="*Must Parent or Legal Guardian of the Patient"
                     android:textSize="12sp" />
                 <EditText
                     android:id="@+id/et_contact"

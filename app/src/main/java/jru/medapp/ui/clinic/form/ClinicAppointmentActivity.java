@@ -1,12 +1,15 @@
 package jru.medapp.ui.clinic.form;
 
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -21,14 +24,18 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import br.com.goncalves.pugnotification.interfaces.PendingIntentNotification;
+import br.com.goncalves.pugnotification.notification.PugNotification;
 import jru.medapp.R;
 import jru.medapp.app.App;
 import jru.medapp.app.Constants;
 import jru.medapp.databinding.ActivityClinicAppointmentBinding;
 import jru.medapp.databinding.DialogAppointmentSuccessBinding;
 import jru.medapp.databinding.DialogSlotsBinding;
+import jru.medapp.model.data.Appointment;
 import jru.medapp.model.data.Clinic;
 import jru.medapp.model.data.Slot;
+import jru.medapp.ui.appointments.detail.AppointmentDetailActivity;
 import jru.medapp.utils.DateTimeUtils;
 
 public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView, ClinicAppointmentPresenter> implements ClinicAppointmentView {
@@ -185,6 +192,31 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
             }
         });
         dialog.show();
+
+        Date date1 = DateTimeUtils.StrToDate(pickedDate + " " + timeSlot);
+        long date1Time = date1.getTime();
+        long diff = date1Time - 10800000;
+        Log.d("DIFF", diff + "");
+        Log.d("DATE1", date1Time + "");
+
+
+        Bundle b = new Bundle();
+        b.putString("clinicName",clinic.getClinicName());
+        b.putString("date", pickedDate);
+        b.putString("time", pickedTime);
+
+        PugNotification.with(this)
+                .load()
+                .title("Clinic Reservation")
+                .message("Please confirm your reservation")
+                .smallIcon(R.mipmap.ic_launcher_round)
+                .largeIcon(R.mipmap.ic_launcher_round)
+                .flags(Notification.PRIORITY_HIGH)
+                .when(diff)
+                .autoCancel(false)
+                .click(AppointmentDetailActivity.class, b)
+                .simple()
+                .build();
     }
 
     @Override
@@ -205,18 +237,16 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
             slots.clear();
         }
 
-        int open = Integer.parseInt(clinic.getClinicHoursOpen().substring(0,2));
-        int close = Integer.parseInt(clinic.getClinicHoursClose().substring(0,2));
+        int open = Integer.parseInt(clinic.getClinicHoursOpen().substring(0, 2));
+        int close = Integer.parseInt(clinic.getClinicHoursClose().substring(0, 2));
         slots = new ArrayList<>();
-        for(int i = open; i<close; i++){
+        for (int i = open; i < close; i++) {
             Slot slot = new Slot();
             slot.setSlotId(i);
-            slot.setSlotTime(i+":00:00");
+            slot.setSlotTime(i + ":00:00");
             slot.setSlotStatus("OPEN");
             slots.add(slot);
         }
-
-
 
 
     }
