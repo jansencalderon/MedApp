@@ -8,7 +8,7 @@
             name="appointment"
             type="jru.medapp.model.data.Appointment" />
 
-        <import type="jru.medapp.utils.DateTimeUtils"/>
+        <import type="jru.medapp.utils.DateTimeUtils" />
     </data>
 
     <LinearLayout
@@ -29,17 +29,28 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            app:cardBackgroundColor="#12f06393"
+            app:cardElevation="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="10dp">
+                android:padding="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:text="Where?"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="@{appointment.clinic.clinicName}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textColor="@color/gray" />
@@ -62,21 +73,33 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            app:cardBackgroundColor="#37f06393"
+            app:cardElevation="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="10dp">
+                android:padding="16dp">
+
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="@{DateTimeUtils.toReadable(appointment.transDate)}"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:fontFamily="sans-serif-light"
+                    android:text="When?"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textColor="@color/gray" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@{DateTimeUtils.toReadable(appointment.transDate)}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="@color/gray"
+                    android:textStyle="bold" />
 
 
                 <TextView
@@ -95,11 +118,13 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            app:cardBackgroundColor="#ffffff"
+            app:cardElevation="1dp">
 
             <LinearLayout
-                android:layout_width="match_parent"
                 android:id="@+id/resPanel"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical"

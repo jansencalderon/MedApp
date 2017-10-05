@@ -7,4 +7,11 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
  */
 
 public interface AppointmentDetailView extends MvpView {
+    void startLoading();
+
+    void stopLoading();
+
+    void showAlert(String s);
+
+    void setAppointment();
 }

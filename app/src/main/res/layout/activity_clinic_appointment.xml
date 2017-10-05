@@ -141,6 +141,21 @@
                     android:text="SEND"
                     android:textColor="@color/white"
                     android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/test"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:background="@drawable/rounded_button_solid"
+                    android:clickable="true"
+                    android:onClick="@{()->view.notifTest()}"
+                    android:padding="8dp"
+                    android:paddingEnd="20dp"
+                    android:paddingStart="20dp"
+                    android:text="TEST"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

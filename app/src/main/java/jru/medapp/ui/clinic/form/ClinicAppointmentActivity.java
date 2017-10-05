@@ -1,15 +1,17 @@
 package jru.medapp.ui.clinic.form;
 
+import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -24,19 +26,17 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import br.com.goncalves.pugnotification.interfaces.PendingIntentNotification;
-import br.com.goncalves.pugnotification.notification.PugNotification;
 import jru.medapp.R;
 import jru.medapp.app.App;
 import jru.medapp.app.Constants;
 import jru.medapp.databinding.ActivityClinicAppointmentBinding;
 import jru.medapp.databinding.DialogAppointmentSuccessBinding;
 import jru.medapp.databinding.DialogSlotsBinding;
-import jru.medapp.model.data.Appointment;
 import jru.medapp.model.data.Clinic;
 import jru.medapp.model.data.Slot;
 import jru.medapp.ui.appointments.detail.AppointmentDetailActivity;
 import jru.medapp.utils.DateTimeUtils;
+import jru.medapp.utils.NotificationPublisher;
 
 public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView, ClinicAppointmentPresenter> implements ClinicAppointmentView {
 
@@ -50,6 +50,7 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
     private String timeSlot;
     private List<Slot> slots;
     private Dialog dialog;
+    private int notifId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,12 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
         Intent i = getIntent();
         clinic = presenter.getClinic(i.getIntExtra(Constants.ID, 0));
         binding.setClinic(clinic);
+
+        if(App.getUser().getUserId()==3){
+            binding.test.setVisibility(View.VISIBLE);
+        }else {
+            binding.test.setVisibility(View.GONE);
+        }
 
 
         // set time
@@ -135,22 +142,6 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
             showAlert("Pick Date First");
         }
 
-
-
-         /*dialogBinding.cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialogBinding.send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.changePassword(dialogBinding.etCurrPassword.getText().toString(),
-                        dialogBinding.etNewPassword.getText().toString(),
-                        dialogBinding.etConfirmPass.getText().toString());
-            }
-        });*/
     }
 
     @Override
@@ -196,27 +187,47 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
         Date date1 = DateTimeUtils.StrToDate(pickedDate + " " + timeSlot);
         long date1Time = date1.getTime();
         long diff = date1Time - 10800000;
-        Log.d("DIFF", diff + "");
-        Log.d("DATE1", date1Time + "");
 
 
-        Bundle b = new Bundle();
-        b.putString("clinicName",clinic.getClinicName());
-        b.putString("date", pickedDate);
-        b.putString("time", pickedTime);
+        notifId = presenter.generateID();
 
-        PugNotification.with(this)
-                .load()
-                .title("Clinic Reservation")
-                .message("Please confirm your reservation")
-                .smallIcon(R.mipmap.ic_launcher_round)
-                .largeIcon(R.mipmap.ic_launcher_round)
-                .flags(Notification.PRIORITY_HIGH)
-                .when(diff)
-                .autoCancel(false)
-                .click(AppointmentDetailActivity.class, b)
-                .simple()
-                .build();
+        scheduleNotification(getNotification(), diff);
+    }
+    @Override
+    public void notifTest(){
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.SECOND, 15);
+        notifId = presenter.generateID();
+        scheduleNotification(getNotification(), cal.getTimeInMillis());
+    }
+
+    private void scheduleNotification(Notification notification, long delay) {
+        Intent notificationIntent = new Intent(this, NotificationPublisher.class);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, notifId);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, notifId, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        long futureInMillis = SystemClock.elapsedRealtime() + delay;
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, delay, pendingIntent);
+    }
+
+    private Notification getNotification() {
+
+        Intent notificationIntent = new Intent(getApplicationContext(), AppointmentDetailActivity.class);
+        notificationIntent.putExtra("from", "notif");
+        notificationIntent.putExtra("clinicId", clinic.getClinicId());
+        notificationIntent.putExtra("date", pickedDate);
+        notificationIntent.putExtra("time", pickedTime);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, notifId, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Notification.Builder builder = new Notification.Builder(this);
+        builder.setContentTitle("Clinic Reservation");
+        builder.setContentText("Please confirm your reservation to " + clinic.getClinicName());
+        builder.setSmallIcon(R.mipmap.ic_launcher_round);
+        builder.setContentIntent(pendingIntent);
+        return builder.build();
     }
 
     @Override

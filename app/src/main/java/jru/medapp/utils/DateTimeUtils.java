@@ -1,7 +1,5 @@
 package jru.medapp.utils;
 
-import android.util.Log;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -85,6 +83,20 @@ public class DateTimeUtils {
         return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US).format(date);
     }
 
+    public static String TO_HH_MM_SS(String dateToConvert) {
+
+        DateFormat f1 = new SimpleDateFormat("h:mm a", Locale.US);
+        String convertedDate = "";
+        try {
+            Date date = f1.parse(dateToConvert);
+            SimpleDateFormat am_pm = new SimpleDateFormat("HH:mm:ss", Locale.US);
+            convertedDate = am_pm.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return convertedDate;
+    }
 
     public static String TO_AM_PM(String dateToConvert) {
 
@@ -125,6 +137,12 @@ public class DateTimeUtils {
         }
 
         return convertedDate;
+    }
+
+    public static String DateToStrYYYY(Date date) {
+
+        if (date == null) return "";
+        return new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(date);
     }
 
     public static Date StrToDateYYYY(String dateToConvert) {
@@ -189,7 +207,7 @@ public class DateTimeUtils {
     }
 
 
-    public static Long hoursDiff(Date date1, Date date2){
+    public static Long hoursDiff(Date date1, Date date2) {
         long diff = date1.getTime() - date2.getTime();//as given
 
         long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);

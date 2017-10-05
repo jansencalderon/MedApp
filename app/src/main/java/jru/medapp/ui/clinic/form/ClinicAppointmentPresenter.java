@@ -11,12 +11,15 @@ import java.util.Map;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 import jru.medapp.R;
 import jru.medapp.app.App;
 import jru.medapp.app.Constants;
 import jru.medapp.model.data.AppointmentSlot;
 import jru.medapp.model.data.Clinic;
+import jru.medapp.model.data.Notif;
 import jru.medapp.model.response.ResultResponse;
+import jru.medapp.utils.DateTimeUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,18 +36,19 @@ public class ClinicAppointmentPresenter extends MvpNullObjectBasePresenter<Clini
         realm = Realm.getDefaultInstance();
     }
 
-    Clinic getClinic(int id){
+    Clinic getClinic(int id) {
         return realm.where(Clinic.class).equalTo(Constants.CLINIC_ID, id).findFirst();
     }
 
-    void onStop() { realm.close();
+    void onStop() {
+        realm.close();
     }
 
-    public void setAppointment(int clinicId, int userId, String date, String time_slot,String note) {
+    public void setAppointment(int clinicId, int userId, String date, String time_slot, String note) {
         getView().startLoading();
         Map<String, String> params = new HashMap<>();
-        params.put("clinic_id", clinicId+"");
-        params.put("user_id", userId+"");
+        params.put("clinic_id", clinicId + "");
+        params.put("user_id", userId + "");
         params.put("trans_date", date);
         params.put("trans_time_slot", time_slot);
         params.put("trans_note", note);
@@ -81,6 +85,40 @@ public class ClinicAppointmentPresenter extends MvpNullObjectBasePresenter<Clini
                 getView().showAlert("Error Connecting to Server");
             }
         });
+    }
+
+
+    public int generateID() {
+        RealmResults<Notif> realmResults = realm.where(Notif.class).findAllSorted("id", Sort.DESCENDING);
+        if (realmResults.size() <= 0) {
+            final Notif notif = new Notif();
+            notif.setId(1);
+            notif.setTag(DateTimeUtils.getDateToday().toString());
+
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    realm.copyToRealmOrUpdate(notif);
+                }
+            });
+
+
+            return 1;
+        } else {
+            Notif max = realmResults.get(0);
+            final Notif notif = new Notif();
+            notif.setId(max.getId() + 1);
+            notif.setTag(DateTimeUtils.getDateToday().toString());
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    realm.copyToRealmOrUpdate(notif);
+                }
+            });
+
+
+            return max.getId() + 1;
+        }
     }
 
     /*void getSlotsOnServer(String date, int clinicId){
@@ -131,9 +169,9 @@ public class ClinicAppointmentPresenter extends MvpNullObjectBasePresenter<Clini
         });
     }*/
 
-    void getSlotsOnServer(String date, int clinicId){
+    void getSlotsOnServer(String date, int clinicId) {
         getView().startLoading();
-        App.getInstance().getApiInterface().getSlots(date,clinicId).enqueue(new Callback<List<AppointmentSlot>>() {
+        App.getInstance().getApiInterface().getSlots(date, clinicId).enqueue(new Callback<List<AppointmentSlot>>() {
             @Override
             public void onResponse(Call<List<AppointmentSlot>> call, final Response<List<AppointmentSlot>> response) {
                 getView().stopLoading();
@@ -158,7 +196,7 @@ public class ClinicAppointmentPresenter extends MvpNullObjectBasePresenter<Clini
                             Log.e(TAG, "onError: Unable to save Data", error);
                         }
                     });
-                }else {
+                } else {
                     try {
                         String errorBody = response.errorBody().string();
                         getView().showAlert(errorBody);
