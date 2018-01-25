@@ -30,8 +30,8 @@
             <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:elevation="0dp"
-                android:theme="@style/AppTheme.AppBarOverlay">
+                android:theme="@style/AppTheme.AppBarOverlay"
+                app:elevation="0dp">
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
@@ -49,6 +49,71 @@
                 android:orientation="vertical"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="6dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Clinic Type"
+                            android:padding="6dp"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edittext_selector">
+
+                            <Spinner
+                                android:id="@+id/spinner_type"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:layout_margin="6dp"
+                                android:gravity="center"
+                                android:textColor="@color/white" />
+                        </FrameLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="6dp"
+                            android:text="City"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edittext_selector">
+
+                            <Spinner
+                                android:id="@+id/spinner_city"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:layout_margin="6dp"
+                                android:gravity="center"
+                                android:textColor="@color/white" />
+                        </FrameLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
 
                 <android.support.v4.widget.SwipeRefreshLayout
                     android:id="@+id/swipeRefreshLayout"

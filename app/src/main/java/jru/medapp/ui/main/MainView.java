@@ -25,7 +25,11 @@ public interface MainView extends MvpView {
 
     void refreshList();
 
-    void setClinics(List<Clinic> clinics);
+    /**
+     * @param clinics
+     * @param filtered
+     */
+    void setClinics(List<Clinic> clinics, Boolean filtered);
 
     void internet(Boolean status);
 

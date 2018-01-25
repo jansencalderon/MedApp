@@ -15,12 +15,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
@@ -43,6 +46,8 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private MainListAdapter adapter;
+    public String type = "";
+    public String city = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +68,7 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
 
 
         //display data
-             binding.navigationView.getHeaderView(0).findViewById(R.id.edit).setOnClickListener(new View.OnClickListener() {
+        binding.navigationView.getHeaderView(0).findViewById(R.id.edit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, ProfileActivity.class));
@@ -83,6 +88,64 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
             @Override
             public void onRefresh() {
                 presenter.getClinics();
+            }
+        });
+
+
+        final List<String> items = new ArrayList<>();
+        items.add("All");
+        items.add("Ophthalmology");
+        items.add("Dentistry");
+        items.add("Dermatology");
+        ArrayAdapter<String> stringAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        binding.spinnerType.setAdapter(stringAdapter);
+        binding.spinnerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (items.get(position)) {
+                    case "Ophthalmology":
+                        type = "ophthal.jpg";
+                        break;
+                    case "Dentistry":
+                        type = "dental.jpg";
+                        break;
+                    case "Dermatology":
+                        type = "derma.jpg";
+                        break;
+                    case "All":
+                        type = "";
+                        break;
+                }
+                presenter.filterList(type, city);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        final List<String> items2 = new ArrayList<>();
+        items2.add("All");
+        items2.add("Mandaluyong");
+        items2.add("Pasig");
+        items2.add("San Juan");
+        ArrayAdapter<String> stringAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items2);
+        binding.spinnerCity.setAdapter(stringAdapter2);
+        binding.spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (items2.get(position).equals("All")) {
+                    city = "";
+                } else {
+                    city = items2.get(position);
+                }
+                presenter.filterList(type, city);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
@@ -138,7 +201,11 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
     }
 
     @Override
-    public void setClinics(List<Clinic> clinics) {
+    public void setClinics(List<Clinic> clinics, Boolean filtered) {
+        if(!filtered){
+            binding.spinnerCity.setSelection(0);
+            binding.spinnerType.setSelection(0);
+        }
         adapter.setList(clinics);
 
     }

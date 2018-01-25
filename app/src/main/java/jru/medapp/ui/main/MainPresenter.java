@@ -7,7 +7,6 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import jru.medapp.app.App;
 import jru.medapp.model.data.Clinic;
@@ -49,7 +48,7 @@ class MainPresenter extends MvpNullObjectBasePresenter<MainView> {
                         @Override
                         public void onSuccess() {
                             realm.close();
-                            filterList();
+                            setList();
                         }
                     }, new Realm.Transaction.OnError() {
                         @Override
@@ -74,10 +73,10 @@ class MainPresenter extends MvpNullObjectBasePresenter<MainView> {
 
     }
 
-    private void filterList() {
+    private void setList() {
         List<Clinic> clinics;
         clinics = realm.copyFromRealm(Clinics);
-        getView().setClinics(clinics);
+        getView().setClinics(clinics, false);
 
     }
 
@@ -87,4 +86,22 @@ class MainPresenter extends MvpNullObjectBasePresenter<MainView> {
     }
 
 
+    public void filterList(String type, String city) {
+        List<Clinic> clinics;
+        Log.e(TAG, "Type: "+type);
+        Log.e(TAG, "City: "+city);
+        if (city.equals("") && type.equals("")) {
+            clinics = realm.copyFromRealm(Clinics);
+        } else if (city.equals("") && !type.equals("")) {
+            clinics = realm.copyFromRealm(Clinics.where().equalTo("clinicImage", type).findAll());
+        } else if (!city.equals("") && type.equals("")) {
+            clinics = realm.copyFromRealm(Clinics.where().contains("clinicAdd", city).findAll());
+        } else {
+            clinics = realm.copyFromRealm(Clinics.where()
+                    .contains("clinicAdd", city)
+                    .equalTo("clinicImage", type)
+                    .findAll());
+        }
+        getView().setClinics(clinics, true);
+    }
 }
