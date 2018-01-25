@@ -50,7 +50,7 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
     private String pickedDate;
     private Date closingdate;
     private ProgressDialog progressDialog;
-    private String timeSlot;
+    private String timeSlot = "";
     private List<Slot> slots;
     private Dialog dialog;
     private int notifId;
