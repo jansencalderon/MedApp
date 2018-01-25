@@ -13,22 +13,18 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import io.realm.Realm;
 import jru.medapp.R;
-import jru.medapp.app.Constants;
 import jru.medapp.databinding.ActivityMainBinding;
 import jru.medapp.model.data.Clinic;
 import jru.medapp.model.data.User;
@@ -163,13 +159,6 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
         Intent intent = new Intent(MainActivity.this, ClinicActivity.class);
         intent.putExtra("id", clinic.getClinicId());
         startActivity(intent);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
     }
 
 

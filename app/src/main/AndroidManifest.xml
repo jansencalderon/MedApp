@@ -46,10 +46,16 @@
         <activity android:name=".ui.clinic.form.ClinicAppointmentActivity" />
         <activity android:name=".ui.appointments.AppointmentActivity" />
         <activity android:name=".ui.profile.ProfileActivity" />
-        <activity android:name=".ui.appointments.detail.AppointmentDetailActivity"
-            android:parentActivityName=".ui.appointments.AppointmentActivity"/>
+        <activity
+            android:name=".ui.appointments.detail.AppointmentDetailActivity"
+            android:launchMode="singleTask"
+            android:parentActivityName=".ui.appointments.AppointmentActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.appointments.AppointmentActivity" />
+        </activity>
 
-        <receiver android:name=".utils.NotificationPublisher"/>
+        <receiver android:name=".utils.NotificationPublisher" />
     </application>
 
 </manifest>

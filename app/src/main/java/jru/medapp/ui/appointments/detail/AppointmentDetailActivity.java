@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.NavUtils;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -29,12 +29,18 @@ public class AppointmentDetailActivity extends MvpActivity<AppointmentDetailView
     private int clinicId;
     private String date;
     private String time;
+    String TAG = AppointmentDetailActivity.class.getSimpleName();
+    private Boolean fromNotif = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_appointment_detail);
         presenter.onStart();
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Please wait...");
 
         setSupportActionBar(binding.toolbar);
         if (getSupportActionBar() != null)
@@ -60,22 +66,32 @@ public class AppointmentDetailActivity extends MvpActivity<AppointmentDetailView
         clinicId = i.getIntExtra("clinicId", 0);
         date = i.getStringExtra("date");
         time = i.getStringExtra("time");
+        Log.e(TAG, "Clinic ID: " + clinicId);
+        Log.e(TAG, "Date: " + date);
+        Log.e(TAG, "Time: " + time);
 
 
         binding.resPanel.setVisibility(View.GONE);
 
         if (i.getStringExtra("from").equals("notif")) {
-            Toast.makeText(this, "FROM NOTIF", Toast.LENGTH_SHORT).show();
             presenter.getAppointments();
             binding.resPanel.setVisibility(View.VISIBLE);
+            fromNotif = true;
         }
 
 
-
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("wait...");
-
+        binding.yes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.changeStatus(appointment.getTransId() + "", "CONFIRMED");
+            }
+        });
+        binding.no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.resPanel.setVisibility(View.GONE);
+            }
+        });
     }
 
 
@@ -100,14 +116,30 @@ public class AppointmentDetailActivity extends MvpActivity<AppointmentDetailView
     public void setAppointment() {
         appointment = presenter.getAppointmentFromNotif(clinicId, date, time);
         binding.setAppointment(appointment);
+        if (appointment.getTransStatus().equals("CONFIRMED"))
+            binding.resPanel.setVisibility(View.GONE);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.refresh, menu);
+        return true;
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
+                finish();
+                return false;
+            case R.id.refresh:
+                if (fromNotif) {
+                    presenter.getAppointments();
+                }
+                return false;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -12,7 +12,8 @@
         <variable
             name="clinic"
             type="jru.medapp.model.data.Clinic" />
-        <import type="jru.medapp.utils.DateTimeUtils"/>
+
+        <import type="jru.medapp.utils.DateTimeUtils" />
     </data>
 
     <LinearLayout
@@ -30,66 +31,142 @@
             android:theme="@style/AppTheme.AppBarOverlay"
             app:title="Clinic" />
 
-        <ImageView
-            android:id="@+id/imageView"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:src="@drawable/opht" />
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
-            android:layout_marginTop="10dp"
-            android:textStyle="bold"
-            android:text="@{clinic.clinicName}"
-            android:textColor="@color/darkGray"
-            android:textSize="24sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:src="@drawable/opht" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="sans-serif-light"
-            android:text="@{clinic.clinicInfo}"
-            android:textColor="@color/darkGray"
-            android:textSize="20sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="sans-serif-light"
-            android:padding="6dp"
-            android:background="@drawable/shape_highlight"
-            android:text='@{DateTimeUtils.TO_AM_PM(clinic.clinicHoursOpen)+" - "+DateTimeUtils.TO_AM_PM(clinic.clinicHoursClose)}'
-            android:textColor="@color/darkGray"
-            android:textSize="16sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_margin="16dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
-            android:gravity="center"
-            android:text="@{clinic.clinicAdd}"
-            android:textColor="@color/darkGray"
-            android:textSize="16sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@{clinic.clinicName}"
+                    android:textColor="@color/darkGray"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_button_solid"
-            android:onClick="@{()->view.setAppointment()}"
-            android:paddingLeft="20dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:paddingRight="20dp"
-            android:text="SET APPOINTMENT"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@{clinic.clinicInfo}"
+                    android:textColor="@color/darkGray"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/shape_highlight"
+                    android:fontFamily="sans-serif-light"
+                    android:padding="6dp"
+                    android:text='@{DateTimeUtils.TO_AM_PM(clinic.clinicHoursOpen)+" - "+DateTimeUtils.TO_AM_PM(clinic.clinicHoursClose)}'
+                    android:textColor="@color/darkGray"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center"
+                    android:text="@{clinic.clinicAdd}"
+                    android:textColor="@color/darkGray"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center"
+                    android:text="Accredited HMOs"
+                    android:textColor="@color/darkGray"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="horizontal">
+
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="6dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/hmo_medicard" />
+
+                        <ImageView
+                            android:layout_width="150dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="6dp"
+                            android:padding="6dp"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/hmo_insular" />
+
+                        <ImageView
+                            android:layout_width="150dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="6dp"
+                            android:padding="6dp"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/hmo_philcare" />
+
+                        <ImageView
+                            android:layout_width="150dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="6dp"
+                            android:padding="6dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/hmo_philhealth" />
+
+                        <ImageView
+                            android:layout_width="150dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="6dp"
+                            android:padding="6dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/hmo_fortunecarelogo" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <TextView
+                    android:layout_gravity="bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:background="@drawable/rounded_button_solid"
+                    android:gravity="center"
+                    android:onClick="@{()->view.setAppointment()}"
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="16dp"
+                    android:text="SET APPOINTMENT"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 </layout>

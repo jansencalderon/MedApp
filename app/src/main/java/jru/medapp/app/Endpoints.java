@@ -7,7 +7,7 @@ package jru.medapp.app;
 public class Endpoints {
 
     public static final String _ID = "{id}/";
-    public static final String BASE_URL = "https://clinicappjru.000webhostapp.com";
+    public static final String BASE_URL = "http://clinicappjru.000webhostapp.com";
     //public static final String BASE_URL = "http://127.0.0.1:8000";
 
     public static final String API_URL = BASE_URL + "/src/v1/";

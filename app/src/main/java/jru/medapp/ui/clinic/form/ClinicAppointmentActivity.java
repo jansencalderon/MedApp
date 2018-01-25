@@ -8,10 +8,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import jru.medapp.R;
 import jru.medapp.app.App;
@@ -39,7 +42,7 @@ import jru.medapp.utils.DateTimeUtils;
 import jru.medapp.utils.NotificationPublisher;
 
 public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView, ClinicAppointmentPresenter> implements ClinicAppointmentView {
-
+    private String TAG = ClinicAppointmentActivity.class.getSimpleName();
     ActivityClinicAppointmentBinding binding;
     final Calendar c = Calendar.getInstance();
     private Clinic clinic;
@@ -68,9 +71,9 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
         clinic = presenter.getClinic(i.getIntExtra(Constants.ID, 0));
         binding.setClinic(clinic);
 
-        if(App.getUser().getUserId()==3){
+        if (App.getUser().getUserId() == 3) {
             binding.test.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             binding.test.setVisibility(View.GONE);
         }
 
@@ -184,22 +187,30 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
         });
         dialog.show();
 
+        Calendar cal = Calendar.getInstance();
         Date date1 = DateTimeUtils.StrToDate(pickedDate + " " + timeSlot);
         long date1Time = date1.getTime();
-        long diff = date1Time - 10800000;
-
+        long diff = (date1Time - 10800000) - cal.getTimeInMillis();
 
         notifId = presenter.generateID();
-
         scheduleNotification(getNotification(), diff);
+        showAlert("Notification is set " + TimeUnit.MILLISECONDS.toHours(diff) + " hours from now");
+      //  notifTest();
     }
-    @Override
-    public void notifTest(){
 
+    @Override
+    public void notifTest() {
+       /* Calendar cal = Calendar.getInstance();
+        Date date1 = DateTimeUtils.StrToDate(pickedDate + " " + timeSlot);
+        long date1Time = date1.getTime();
+        long diff = (date1Time - 10800000) - cal.getTimeInMillis();
+
+        Log.e("DIFF", "" + diff);
+        showAlert("DIFF " + diff);
+        */
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.SECOND, 15);
         notifId = presenter.generateID();
-        scheduleNotification(getNotification(), cal.getTimeInMillis());
+        scheduleNotification(getNotification(), 1);
     }
 
     private void scheduleNotification(Notification notification, long delay) {
@@ -208,9 +219,13 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, notifId, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        long futureInMillis = SystemClock.elapsedRealtime() + delay;
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, delay, pendingIntent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            alarmManager.setExact(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + delay, pendingIntent);
+        } else {
+            alarmManager.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + delay, pendingIntent);
+        }
+        Log.e(TAG, "Delay: " + delay);
     }
 
     private Notification getNotification() {
@@ -219,7 +234,17 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
         notificationIntent.putExtra("from", "notif");
         notificationIntent.putExtra("clinicId", clinic.getClinicId());
         notificationIntent.putExtra("date", pickedDate);
-        notificationIntent.putExtra("time", pickedTime);
+        notificationIntent.putExtra("time", timeSlot);
+
+        Log.e(TAG, "Clinic ID: " + clinic.getClinicId());
+        Log.e(TAG, "Date: " + pickedDate);
+        Log.e(TAG, "Time: " + timeSlot);
+
+
+        /*notificationIntent.putExtra("from", "notif");
+        notificationIntent.putExtra("clinicId", 7);
+        notificationIntent.putExtra("date", "2017-10-08");
+        notificationIntent.putExtra("time", "13:00:00");*/
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, notifId, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         Notification.Builder builder = new Notification.Builder(this);
@@ -227,6 +252,7 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
         builder.setContentText("Please confirm your reservation to " + clinic.getClinicName());
         builder.setSmallIcon(R.mipmap.ic_launcher_round);
         builder.setContentIntent(pendingIntent);
+        builder.setAutoCancel(true);
         return builder.build();
     }
 
@@ -267,7 +293,6 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
     public ClinicAppointmentPresenter createPresenter() {
         return new ClinicAppointmentPresenter();
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

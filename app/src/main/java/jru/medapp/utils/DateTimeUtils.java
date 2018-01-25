@@ -85,7 +85,7 @@ public class DateTimeUtils {
 
     public static String TO_HH_MM_SS(String dateToConvert) {
 
-        DateFormat f1 = new SimpleDateFormat("h:mm a", Locale.US);
+        DateFormat f1 = new SimpleDateFormat("HH:mm:ss", Locale.US);
         String convertedDate = "";
         try {
             Date date = f1.parse(dateToConvert);
@@ -108,6 +108,9 @@ public class DateTimeUtils {
             convertedDate = am_pm.format(date);
         } catch (ParseException e) {
             e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return "";
         }
 
         return convertedDate;

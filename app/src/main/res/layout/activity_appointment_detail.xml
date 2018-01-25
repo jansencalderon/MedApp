@@ -50,7 +50,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="10dp"
                     android:text="@{appointment.clinic.clinicName}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textColor="@color/gray" />
@@ -74,7 +74,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
-            app:cardBackgroundColor="#37f06393"
+            app:cardBackgroundColor="#12f06393"
             app:cardElevation="0dp">
 
             <LinearLayout
@@ -95,7 +95,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="10dp"
                     android:text="@{DateTimeUtils.toReadable(appointment.transDate)}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textColor="@color/gray"
@@ -106,24 +106,58 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="@{appointment.transTimeSlot}"
+                    android:text="@{DateTimeUtils.TO_AM_PM(appointment.transTimeSlot)}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                     android:textColor="@color/gray" />
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
-
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
-            app:cardBackgroundColor="#ffffff"
-            app:cardElevation="1dp">
+            app:cardBackgroundColor="#12f06393"
+            app:cardElevation="0dp">
 
             <LinearLayout
-                android:id="@+id/resPanel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:text="Status"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@{appointment.transStatus}"
+                    android:textSize="30sp"
+                    android:textColor="@color/gray"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/resPanel"
+            android:layout_marginTop="10dp"
+            app:cardBackgroundColor="#1263ddf0"
+            app:cardElevation="0dp">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -146,6 +180,7 @@
                     android:weightSum="100">
 
                     <TextView
+                        android:id="@+id/yes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="50"
@@ -158,6 +193,7 @@
                         android:textColor="@color/white" />
 
                     <TextView
+                        android:id="@+id/no"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"

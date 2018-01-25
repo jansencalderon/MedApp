@@ -68,7 +68,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-light"
-                        android:text="@{appointment.transTimeSlot}"
+                        android:text="@{DateTimeUtils.TO_AM_PM(appointment.transTimeSlot)}"
                         android:textSize="16sp"
                         android:textStyle="bold" />
                 </LinearLayout>

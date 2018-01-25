@@ -8,6 +8,7 @@ import jru.medapp.model.data.Appointment;
 import jru.medapp.model.data.AppointmentSlot;
 import jru.medapp.model.data.Clinic;
 import jru.medapp.model.data.User;
+import jru.medapp.model.response.AppointmentResponse;
 import jru.medapp.model.response.LoginResponse;
 import jru.medapp.model.response.ResultResponse;
 import okhttp3.MultipartBody;
@@ -124,4 +125,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     Call<List<AppointmentSlot>> getSlots(@Field("dates") String dates,
                                          @Field("clinic_id") int clinic_id);
+
+
+
+    @POST("changeStatus")
+    @FormUrlEncoded
+    Call<AppointmentResponse> changeStatus(@Field("trans_id") String trans_id,
+                                           @Field("status") String status);
 }
