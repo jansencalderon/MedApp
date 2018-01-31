@@ -36,9 +36,13 @@ public class Appointment extends RealmObject{
     @SerializedName("trans_status")
     @Expose
     private String transStatus;
+    @SerializedName("denied_reason")
+    @Expose
+    private String deniedReason;
     @SerializedName("clinic")
     @Expose
     private Clinic clinic;
+
 
     public Integer getTransId() {
         return transId;
@@ -102,5 +106,13 @@ public class Appointment extends RealmObject{
 
     public void setTransTimeSlot(String transTimeSlot) {
         this.transTimeSlot = transTimeSlot;
+    }
+
+    public String getDeniedReason() {
+        return deniedReason;
+    }
+
+    public void setDeniedReason(String deniedReason) {
+        this.deniedReason = deniedReason;
     }
 }

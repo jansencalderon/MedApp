@@ -57,10 +57,10 @@ public class AppointmentDetailActivity extends MvpActivity<AppointmentDetailView
             Log.d("TIME", "DATE2" + DateTimeUtils.getDateToday().getTime());
             Log.d("TIME", "DATE1" + DateTimeUtils.getDateToday().getTime());
             Log.d("TIME", "DIFF" + diff);
-            if (diff <= 10800000) {
-                binding.resPanel.setVisibility(View.VISIBLE);
+            if (diff <= 10800000 && appointment.getTransStatus().equals("PENDING")) {
+                binding.confirm.setVisibility(View.VISIBLE);
             } else {
-                binding.resPanel.setVisibility(View.GONE);
+                binding.confirm.setVisibility(View.GONE);
             }
         }
         clinicId = i.getIntExtra("clinicId", 0);
@@ -71,27 +71,39 @@ public class AppointmentDetailActivity extends MvpActivity<AppointmentDetailView
         Log.e(TAG, "Time: " + time);
 
 
-        binding.resPanel.setVisibility(View.GONE);
+        binding.confirm.setVisibility(View.GONE);
 
         if (i.getStringExtra("from").equals("notif")) {
             presenter.getAppointments();
-            binding.resPanel.setVisibility(View.VISIBLE);
+            binding.confirm.setVisibility(View.VISIBLE);
             fromNotif = true;
         }
 
 
-        binding.yes.setOnClickListener(new View.OnClickListener() {
+        binding.confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.changeStatus(appointment.getTransId() + "", "CONFIRMED");
             }
         });
-        binding.no.setOnClickListener(new View.OnClickListener() {
+
+
+        binding.cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                binding.resPanel.setVisibility(View.GONE);
+                presenter.changeStatus(appointment.getTransId() + "", "CANCELLED");
             }
         });
+
+        if (appointment.getTransStatus().equals("PENDING"))
+            binding.confirm.setVisibility(View.VISIBLE);
+        else
+            binding.confirm.setVisibility(View.GONE);
+
+
+        if(appointment.getTransStatus().equals("CANCELLED") || appointment.getTransStatus().equals("DENIED")){
+            binding.cancel.setVisibility(View.GONE);
+        }
     }
 
 
@@ -116,8 +128,30 @@ public class AppointmentDetailActivity extends MvpActivity<AppointmentDetailView
     public void setAppointment() {
         appointment = presenter.getAppointmentFromNotif(clinicId, date, time);
         binding.setAppointment(appointment);
-        if (appointment.getTransStatus().equals("CONFIRMED"))
-            binding.resPanel.setVisibility(View.GONE);
+        if (appointment.getTransStatus().equals("PENDING"))
+            binding.confirm.setVisibility(View.VISIBLE);
+        else
+            binding.confirm.setVisibility(View.GONE);
+
+
+        if(appointment.getTransStatus().equals("CANCELLED") || appointment.getTransStatus().equals("DENIED")){
+            binding.cancel.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void updateAppointment(int id){
+        Appointment appointment = presenter.getAppointment(id);
+        binding.setAppointment(appointment);
+        if (appointment.getTransStatus().equals("PENDING"))
+            binding.confirm.setVisibility(View.VISIBLE);
+        else
+            binding.confirm.setVisibility(View.GONE);
+
+
+        if(appointment.getTransStatus().equals("CANCELLED") || appointment.getTransStatus().equals("DENIED")){
+            binding.cancel.setVisibility(View.GONE);
+        }
     }
 
     @Override

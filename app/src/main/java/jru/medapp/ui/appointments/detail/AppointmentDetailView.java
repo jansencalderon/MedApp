@@ -14,4 +14,6 @@ public interface AppointmentDetailView extends MvpView {
     void showAlert(String s);
 
     void setAppointment();
+
+    void updateAppointment(int id);
 }

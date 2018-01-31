@@ -74,7 +74,7 @@ public class AppointmentDetailPresenter extends MvpNullObjectBasePresenter<Appoi
         });
     }
 
-    void changeStatus(String trans_id, String status) {
+    void changeStatus(String trans_id, final String status) {
         getView().startLoading();
         App.getInstance().getApiInterface().changeStatus(trans_id, status).enqueue(new Callback<AppointmentResponse>() {
             @Override
@@ -82,25 +82,24 @@ public class AppointmentDetailPresenter extends MvpNullObjectBasePresenter<Appoi
                 getView().stopLoading();
                 if (response.isSuccessful()) {
                     if (response.body().getResult().equals(Constants.SUCCESS)) {
-                        getView().showAlert("Appointment is confirmed");
+                        getView().showAlert("Appointment is "+status);
                         final Realm realm = Realm.getDefaultInstance();
                         realm.executeTransactionAsync(new Realm.Transaction() {
                             @Override
                             public void execute(Realm realm) {
                                 realm.copyToRealmOrUpdate(response.body().getData());
-                                getView().setAppointment();
                             }
                         }, new Realm.Transaction.OnSuccess() {
                             @Override
                             public void onSuccess() {
                                 realm.close();
-                                getView().setAppointment();
+                                getView().updateAppointment(response.body().getData().getTransId());
                             }
                         }, new Realm.Transaction.OnError() {
                             @Override
                             public void onError(Throwable error) {
                                 realm.close();
-                                Log.e(TAG, "onError: Unable to save Data", error);
+                                Log.e(TAG, "on Error: Unable to save Data", error);
                             }
                         });
                     }

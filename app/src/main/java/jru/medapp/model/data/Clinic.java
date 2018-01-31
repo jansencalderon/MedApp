@@ -58,7 +58,12 @@ public class Clinic extends RealmObject {
     @SerializedName("clinic_password")
     @Expose
     private String clinicPassword;
-
+    @SerializedName("clinic_description")
+    @Expose
+    private String clinicDescription;
+    @SerializedName("clinic_doctor")
+    @Expose
+    private String clinicDoctor;
     public Integer getClinicId() {
         return clinicId;
     }
@@ -177,5 +182,21 @@ public class Clinic extends RealmObject {
 
     public void setClinicHoursClose(String clinicHoursClose) {
         this.clinicHoursClose = clinicHoursClose;
+    }
+
+    public String getClinicDescription() {
+        return clinicDescription;
+    }
+
+    public void setClinicDescription(String clinicDescription) {
+        this.clinicDescription = clinicDescription;
+    }
+
+    public String getClinicDoctor() {
+        return clinicDoctor;
+    }
+
+    public void setClinicDoctor(String clinicDoctor) {
+        this.clinicDoctor = clinicDoctor;
     }
 }

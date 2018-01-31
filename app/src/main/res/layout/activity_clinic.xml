@@ -71,6 +71,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@{clinic.clinicDescription}"
+                    android:textColor="@color/darkGray"
+                    android:textSize="16sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@{clinic.clinicDoctor}"
+                    android:textColor="@color/darkGray"
+                    android:textSize="16sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:background="@drawable/shape_highlight"
                     android:fontFamily="sans-serif-light"
                     android:padding="6dp"
