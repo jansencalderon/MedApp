@@ -1,20 +1,15 @@
 package jru.medapp.ui.profile;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
 import jru.medapp.R;
 import jru.medapp.app.App;
 import jru.medapp.app.Constants;
 import jru.medapp.model.data.User;
 import jru.medapp.model.response.ResultResponse;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -78,7 +73,6 @@ public class ProfilePresenter extends MvpNullObjectBasePresenter<ProfileView> {
     void changePassword(String currPass, String newPass, String confirmNewPass) {
         final User user = App.getUser();
         if (currPass.equals(user.getPassword())) {
-
             if (confirmNewPass.equals(confirmNewPass.toLowerCase())) {
                 getView().showAlert("Password must have Uppercase!");
             } else if (confirmNewPass.length() < 8) {

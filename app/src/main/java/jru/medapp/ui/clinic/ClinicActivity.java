@@ -1,29 +1,18 @@
 package jru.medapp.ui.clinic;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
-import io.realm.Realm;
 import jru.medapp.R;
 import jru.medapp.app.Constants;
 import jru.medapp.databinding.ActivityClinicBinding;
-import jru.medapp.databinding.DialogAppointmentFormBinding;
-import jru.medapp.databinding.DialogNearestBinding;
 import jru.medapp.model.data.Clinic;
 import jru.medapp.ui.clinic.form.ClinicAppointmentActivity;
-import jru.medapp.ui.main.MainActivity;
-import jru.medapp.ui.map.MapActivity;
 
 public class ClinicActivity extends MvpActivity<ClinicView, ClinicPresenter> implements ClinicView {
 
@@ -74,7 +63,6 @@ public class ClinicActivity extends MvpActivity<ClinicView, ClinicPresenter> imp
         startActivity(intent);
     }
 
-    @NonNull
     @Override
     public ClinicPresenter createPresenter() {
         return new ClinicPresenter();

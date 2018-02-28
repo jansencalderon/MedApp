@@ -117,7 +117,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
-                            android:text="@{DateTimeUtils.TO_AM_PM(appointment.transTimeSlot)}"
+                            android:text="@{appointment.transTimeSlot}"
                             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/gray" />
                     </LinearLayout>
@@ -232,6 +232,17 @@
                     </LinearLayout>
 
                 </android.support.v7.widget.CardView>
+                <TextView
+                    android:id="@+id/reSched"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/rounded_slight_green"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="RESCHED APPOINTMENT"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/white" />
                 <TextView
                     android:id="@+id/confirm"
                     android:layout_width="match_parent"

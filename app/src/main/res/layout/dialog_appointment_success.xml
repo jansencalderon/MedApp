@@ -15,6 +15,7 @@
             android:layout_height="wrap_content"
             android:background="@color/greenSuccess"
             android:fontFamily="sans-serif-light"
+            android:id="@+id/label"
             android:gravity="center"
             android:padding="10dp"
             android:text="SET APPOINTMENT SUCCESSFUL"
@@ -40,7 +41,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif-light"
                 android:padding="10dp"
-                android:text="Appontment Details"
+                android:text="Appointment Details"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 

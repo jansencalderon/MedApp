@@ -89,7 +89,6 @@ public class AppointmentActivity extends MvpActivity<AppointmentView, Appointmen
         startActivity(intent);*/
     }
 
-    @NonNull
     @Override
     public AppointmentPresenter createPresenter() {
         return new AppointmentPresenter();

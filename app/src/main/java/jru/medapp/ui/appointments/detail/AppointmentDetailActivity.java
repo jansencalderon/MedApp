@@ -1,10 +1,11 @@
 package jru.medapp.ui.appointments.detail;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,12 +14,15 @@ import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import jru.medapp.R;
 import jru.medapp.app.Constants;
 import jru.medapp.databinding.ActivityAppointmentDetailBinding;
 import jru.medapp.model.data.Appointment;
+import jru.medapp.ui.clinic.form.ClinicAppointmentActivity;
 import jru.medapp.utils.DateTimeUtils;
 
 public class AppointmentDetailActivity extends MvpActivity<AppointmentDetailView, AppointmentDetailPresenter> implements AppointmentDetailView {
@@ -50,8 +54,20 @@ public class AppointmentDetailActivity extends MvpActivity<AppointmentDetailView
         if (i.getStringExtra("from").equals("list")) {
             appointment = presenter.getAppointment(i.getIntExtra(Constants.ID, -1));
             binding.setAppointment(appointment);
-            Date date1 = DateTimeUtils.StrToDate(DateTimeUtils.DateToStrYYYY(appointment.getTransDate()) + " " + DateTimeUtils.TO_HH_MM_SS(appointment.getTransTimeSlot()));
-            Log.d("TIME", "DATE2" + appointment.getTransDate() + " " + appointment.getTransTimeSlot());
+            //String[] appointmentTime = appointment.getTransTimeSlot().split("-");
+            String time = appointment.getTransTimeSlot();
+            /*SimpleDateFormat date12Format = new SimpleDateFormat("hh:mm a");
+            SimpleDateFormat date24Format = new SimpleDateFormat("HH:mm:ss");
+            try {
+                time = date24Format.format(date12Format.parse(time));
+            } catch (ParseException e) {
+                e.printStackTrace();
+                time = "";
+            }*/
+
+
+            Date date1 = DateTimeUtils.StrToDate(DateTimeUtils.DateToStrYYYY(appointment.getTransDate()) + " " + appointment.getTransTimeSlot());
+            Log.d("TIME", "DATE2" + appointment.getTransDate() + " " + time);
             long date1Time = date1.getTime();
             long diff = date1Time - DateTimeUtils.getDateToday().getTime();
             Log.d("TIME", "DATE2" + DateTimeUtils.getDateToday().getTime());
@@ -91,7 +107,27 @@ public class AppointmentDetailActivity extends MvpActivity<AppointmentDetailView
         binding.cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.changeStatus(appointment.getTransId() + "", "CANCELLED");
+                AlertDialog.Builder builder = new AlertDialog.Builder(AppointmentDetailActivity.this);
+                builder.setTitle("Cancel Appointment");
+                builder.setMessage("Are you sure you want to cancel?");
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do nothing but close the dialog
+                        presenter.changeStatus(appointment.getTransId() + "", "CANCELLED");
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        // Do nothing
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
 
@@ -101,9 +137,28 @@ public class AppointmentDetailActivity extends MvpActivity<AppointmentDetailView
             binding.confirm.setVisibility(View.GONE);
 
 
-        if(appointment.getTransStatus().equals("CANCELLED") || appointment.getTransStatus().equals("DENIED")){
+        if (appointment.getTransStatus().equals("CANCELLED") || appointment.getTransStatus().equals("DENIED")) {
             binding.cancel.setVisibility(View.GONE);
+            binding.reSched.setVisibility(View.GONE);
         }
+
+        // Toast.makeText(this, appointment.getReschedDate().toString() , Toast.LENGTH_SHORT).show();
+        if (appointment.getReschedDate() != null)
+            binding.reSched.setVisibility(View.GONE);
+        else
+            binding.reSched.setVisibility(View.VISIBLE);
+
+        binding.reSched.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AppointmentDetailActivity.this, ClinicAppointmentActivity.class);
+                intent.putExtra(Constants.ID, appointment.getTransId());
+                intent.putExtra(Constants.FROM, "FROM_APPOINTMENT");
+                startActivity(intent);
+                finish();
+            }
+        });
+
     }
 
 
@@ -134,13 +189,20 @@ public class AppointmentDetailActivity extends MvpActivity<AppointmentDetailView
             binding.confirm.setVisibility(View.GONE);
 
 
-        if(appointment.getTransStatus().equals("CANCELLED") || appointment.getTransStatus().equals("DENIED")){
+        if (appointment.getReschedDate() == null)
+            binding.reSched.setVisibility(View.GONE);
+        else
+            binding.reSched.setVisibility(View.VISIBLE);
+
+
+        if (appointment.getTransStatus().equals("CANCELLED") || appointment.getTransStatus().equals("DENIED")) {
             binding.cancel.setVisibility(View.GONE);
+            binding.reSched.setVisibility(View.GONE);
         }
     }
 
     @Override
-    public void updateAppointment(int id){
+    public void updateAppointment(int id) {
         Appointment appointment = presenter.getAppointment(id);
         binding.setAppointment(appointment);
         if (appointment.getTransStatus().equals("PENDING"))
@@ -149,7 +211,7 @@ public class AppointmentDetailActivity extends MvpActivity<AppointmentDetailView
             binding.confirm.setVisibility(View.GONE);
 
 
-        if(appointment.getTransStatus().equals("CANCELLED") || appointment.getTransStatus().equals("DENIED")){
+        if (appointment.getTransStatus().equals("CANCELLED") || appointment.getTransStatus().equals("DENIED")) {
             binding.cancel.setVisibility(View.GONE);
         }
     }
@@ -167,6 +229,7 @@ public class AppointmentDetailActivity extends MvpActivity<AppointmentDetailView
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 return false;
             case R.id.refresh:
                 if (fromNotif) {
@@ -179,7 +242,6 @@ public class AppointmentDetailActivity extends MvpActivity<AppointmentDetailView
         }
     }
 
-    @NonNull
     @Override
     public AppointmentDetailPresenter createPresenter() {
         return new AppointmentDetailPresenter();

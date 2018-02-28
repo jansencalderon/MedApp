@@ -28,4 +28,6 @@ public interface ClinicAppointmentView extends MvpView {
     void onSlotChosed(Slot slot);
 
     void onSetSlots();
+
+    void onReschedSuccess();
 }

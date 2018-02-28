@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -173,7 +172,6 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter> implement
     }
 
 
-    @NonNull
     @Override
     public MainPresenter createPresenter() {
         return new MainPresenter();

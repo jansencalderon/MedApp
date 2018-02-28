@@ -15,6 +15,7 @@ import io.realm.Sort;
 import jru.medapp.R;
 import jru.medapp.app.App;
 import jru.medapp.app.Constants;
+import jru.medapp.model.data.Appointment;
 import jru.medapp.model.data.AppointmentSlot;
 import jru.medapp.model.data.Clinic;
 import jru.medapp.model.data.Notif;
@@ -61,6 +62,41 @@ public class ClinicAppointmentPresenter extends MvpNullObjectBasePresenter<Clini
                         case Constants.SUCCESS:
                             getView().onSetSuccess();
 
+                            break;
+                        default:
+                            getView().showAlert(String.valueOf(R.string.oops));
+                            break;
+                    }
+                } else {
+                    try {
+                        String errorBody = response.errorBody().string();
+                        getView().showAlert(errorBody);
+                    } catch (IOException e) {
+                        Log.e(TAG, "onResponse: Error parsing error body as string", e);
+                        getView().showAlert(response.message() != null ?
+                                response.message() : "Unknown Exception");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResultResponse> call, Throwable t) {
+                Log.e(TAG, "onFailure: Error calling register api", t);
+                getView().stopLoading();
+                getView().showAlert("Error Connecting to Server");
+            }
+        });
+    }
+
+    public void rescheduleAppointment(Integer transId, String reschedDate, String transTimeSlot, String transNote) {
+        App.getInstance().getApiInterface().rescheduleAppointment(transId+"", reschedDate, transTimeSlot, transNote).enqueue(new Callback<ResultResponse>() {
+            @Override
+            public void onResponse(Call<ResultResponse> call, Response<ResultResponse> response) {
+                getView().stopLoading();
+                if (response.isSuccessful()) {
+                    switch (response.body().getResult()) {
+                        case Constants.SUCCESS:
+                            getView().onReschedSuccess();
                             break;
                         default:
                             getView().showAlert(String.valueOf(R.string.oops));
@@ -215,6 +251,10 @@ public class ClinicAppointmentPresenter extends MvpNullObjectBasePresenter<Clini
                 getView().showAlert("Error Connecting to Server");
             }
         });
+    }
+
+    public Appointment getAppointment(int id) {
+        return realm.where(Appointment.class).equalTo("transId", id).findFirst();
     }
 
    /* List<AppointmentSlot> appointmentSlotsPM(){

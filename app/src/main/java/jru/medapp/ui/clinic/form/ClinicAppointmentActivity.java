@@ -6,12 +6,13 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.MenuItem;
@@ -35,6 +36,7 @@ import jru.medapp.app.Constants;
 import jru.medapp.databinding.ActivityClinicAppointmentBinding;
 import jru.medapp.databinding.DialogAppointmentSuccessBinding;
 import jru.medapp.databinding.DialogSlotsBinding;
+import jru.medapp.model.data.Appointment;
 import jru.medapp.model.data.Clinic;
 import jru.medapp.model.data.Slot;
 import jru.medapp.ui.appointments.detail.AppointmentDetailActivity;
@@ -54,6 +56,8 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
     private List<Slot> slots;
     private Dialog dialog;
     private int notifId;
+    private Appointment appointment;
+    private String from;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +72,19 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
 
 
         Intent i = getIntent();
-        clinic = presenter.getClinic(i.getIntExtra(Constants.ID, 0));
+        from = i.getStringExtra(Constants.FROM);
+        if(from == null){
+            from = "";
+        }
+        if (from.equals("FROM_APPOINTMENT")) {
+            appointment = presenter.getAppointment(i.getIntExtra(Constants.ID, 0));
+            clinic = appointment.getClinic();
+            binding.etNote.setText(appointment.getTransNote());
+            binding.toolbar.setTitle("Reschedule Appointment");
+            binding.send.setText("RESCHEDULE");
+        } else {
+            clinic = presenter.getClinic(i.getIntExtra(Constants.ID, 0));
+        }
         binding.setClinic(clinic);
 
         if (App.getUser().getUserId() == 3) {
@@ -120,7 +136,30 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
         if (timeSlot.equals("") || timeSlot == null) {
             showAlert("Pick Time Slot");
         } else {
-            presenter.setAppointment(clinic.getClinicId(), App.getUser().getUserId(), pickedDate.trim(), timeSlot, binding.etNote.getText().toString());
+            final AlertDialog.Builder builder = new AlertDialog.Builder(ClinicAppointmentActivity.this);
+            builder.setTitle("Confirm Appointment");
+            builder.setMessage("Are you sure you want to schedule this appointment?");
+            builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    if (from.equals("FROM_APPOINTMENT")) {
+                        presenter.rescheduleAppointment(appointment.getTransId(), pickedDate.trim(), timeSlot, binding.etNote.getText().toString());
+                    } else {
+                        presenter.setAppointment(clinic.getClinicId(), App.getUser().getUserId(), pickedDate.trim(), timeSlot, binding.etNote.getText().toString());
+                    }
+                    dialog.dismiss();
+                }
+            });
+            builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    // Do nothing
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
         }
     }
 
@@ -195,7 +234,42 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
         notifId = presenter.generateID();
         scheduleNotification(getNotification(), diff);
         showAlert("Notification is set " + TimeUnit.MILLISECONDS.toHours(diff) + " hours from now");
-      //  notifTest();
+        //  notifTest();
+    }
+
+    @Override
+    public void onReschedSuccess() {
+        DialogAppointmentSuccessBinding dialogBinding = DataBindingUtil.inflate(
+                getLayoutInflater(),
+                R.layout.dialog_appointment_success,
+                null,
+                false);
+        dialogBinding.clinicName.setText(clinic.getClinicName());
+        dialogBinding.patientName.setText(App.getUser().getFullName());
+        dialogBinding.date.setText(pickedDate);
+        dialogBinding.time.setText(binding.slotTime.getText().toString());
+        dialogBinding.label.setText("RESCHEDULING OF APPOINTMENT SUCCESSFUL");
+
+        final Dialog dialog = new Dialog(ClinicAppointmentActivity.this);
+        dialog.setContentView(dialogBinding.getRoot());
+        dialogBinding.close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                ClinicAppointmentActivity.this.finish();
+            }
+        });
+        dialog.show();
+
+        Calendar cal = Calendar.getInstance();
+        Date date1 = DateTimeUtils.StrToDate(pickedDate + " " + timeSlot);
+        long date1Time = date1.getTime();
+        long diff = (date1Time - 10800000) - cal.getTimeInMillis();
+
+        notifId = presenter.generateID();
+        scheduleNotification(getNotification(), diff);
+        showAlert("Notification is set " + TimeUnit.MILLISECONDS.toHours(diff) + " hours from now");
+
     }
 
     @Override
@@ -288,7 +362,7 @@ public class ClinicAppointmentActivity extends MvpActivity<ClinicAppointmentView
 
     }
 
-    @NonNull
+
     @Override
     public ClinicAppointmentPresenter createPresenter() {
         return new ClinicAppointmentPresenter();

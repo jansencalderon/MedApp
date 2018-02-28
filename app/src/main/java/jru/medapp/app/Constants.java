@@ -51,4 +51,5 @@ public class Constants {
 
 
     public static final String CLINIC_ID = "clinicId" ;
+    public static String FROM = "from";
 }

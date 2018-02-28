@@ -27,6 +27,9 @@ public class Appointment extends RealmObject{
     @SerializedName("trans_date")
     @Expose
     private Date transDate;
+    @SerializedName("resched_date")
+    @Expose
+    private Date reschedDate;
     @SerializedName("trans_time_slot")
     @Expose
     private String transTimeSlot;
@@ -114,5 +117,13 @@ public class Appointment extends RealmObject{
 
     public void setDeniedReason(String deniedReason) {
         this.deniedReason = deniedReason;
+    }
+
+    public Date getReschedDate() {
+        return reschedDate;
+    }
+
+    public void setReschedDate(Date reschedDate) {
+        this.reschedDate = reschedDate;
     }
 }

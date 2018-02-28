@@ -127,9 +127,16 @@ public interface ApiInterface {
                                          @Field("clinic_id") int clinic_id);
 
 
-
     @POST("changeStatus")
     @FormUrlEncoded
     Call<AppointmentResponse> changeStatus(@Field("trans_id") String trans_id,
                                            @Field("status") String status);
+
+
+    @POST("rescheduleAppointment")
+    @FormUrlEncoded
+    Call<ResultResponse> rescheduleAppointment(@Field("trans_id") String trans_id,
+                                                    @Field("resched_date") String reschedDate,
+                                                    @Field("trans_time_slot") String trans_time_slot,
+                                                    @Field("trans_note") String trans_note);
 }
