@@ -102,11 +102,20 @@
                             android:text="When?"
                             android:textAppearance="@style/TextAppearance.AppCompat.Title"
                             android:textColor="@color/gray" />
-
+                        <TextView
+                            android:id="@+id/reScheduled"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@{`Rescheduled: `+DateTimeUtils.toReadable(appointment.reschedDate)}"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                            android:textColor="@color/gray"
+                            android:visibility="@{appointment.reschedDate == null ? View.GONE : View.VISIBLE}" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
+                            android:visibility="@{appointment.reschedDate != null ? View.GONE : View.VISIBLE}"
                             android:text="@{DateTimeUtils.toReadable(appointment.transDate)}"
                             android:textAppearance="@style/TextAppearance.AppCompat.Title"
                             android:textColor="@color/gray"
@@ -117,9 +126,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
-                            android:text="@{appointment.transTimeSlot}"
+                            android:text='@{DateTimeUtils.TO_AM_PM(appointment.transTimeSlot)}'
                             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                             android:textColor="@color/gray" />
+
+
+
                     </LinearLayout>
 
                 </android.support.v7.widget.CardView>
@@ -158,13 +170,15 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/deniedReason"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:id="@+id/deniedReason"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
                             android:text="@{appointment.deniedReason}"
-                            android:textColor="@color/gray"/>
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                            android:textColor="@color/gray" />
+
+
                     </LinearLayout>
 
                 </android.support.v7.widget.CardView>
@@ -176,8 +190,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:visibility="gone"
                     android:layout_marginTop="10dp"
+                    android:visibility="gone"
                     app:cardBackgroundColor="#1263ddf0"
                     app:cardElevation="0dp">
 
@@ -232,6 +246,7 @@
                     </LinearLayout>
 
                 </android.support.v7.widget.CardView>
+
                 <TextView
                     android:id="@+id/reSched"
                     android:layout_width="match_parent"
@@ -243,6 +258,7 @@
                     android:text="RESCHED APPOINTMENT"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                     android:textColor="@color/white" />
+
                 <TextView
                     android:id="@+id/confirm"
                     android:layout_width="match_parent"
@@ -254,6 +270,7 @@
                     android:text="CONFIRM APPOINTMENT"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                     android:textColor="@color/white" />
+
                 <TextView
                     android:id="@+id/cancel"
                     android:layout_width="match_parent"
